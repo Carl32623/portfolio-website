@@ -1,17 +1,40 @@
+<!--
+  File: index.html
+  Title: Carl LaLonde — Portfolio
+  Purpose: Landing page with about, projects, skills, resume, contact, and footer.
+  Tech: Tailwind CSS via CDN (production should consider a compiled build for performance).
+  Accessibility: Uses semantic landmarks, labels, and focusable nav links.
+  Author: Carl LaLonde
+  Last Updated: 2025-08-18
+-->
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>My Portfolio</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- Descriptive title for SEO and tab naming -->
+        <title>Carl LaLonde - Portfolio</title>
+        <link rel="stylesheet" href="dist/styles.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
+        <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+        <script src="script.js" defer></script>
     </head>
 
     <body>
 
+        <!--
+        Global Navigation
+        - Fixed at top with subtle blur for modern feel
+        - Contains anchor links to sections and external blog link
+        -->
         <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 shadow-none py-4 px-6 flex justify-between items-center">
             
+            <!-- Brand / Name -->
             <div class="text-2xl font-bold text-blue-600">Carl LaLonde</div>
+
+            <!-- Primary Nav Links -->
             <div class="space-x-6">
                 <a href="#about" class="text-gray-600 hover:text-blue-600 font-medium">About</a>
                 <a href="#projects" class="text-gray-600 hover:text-blue-600 font-medium">Projects</a>
@@ -20,8 +43,10 @@
             </div>
         </nav>
 
+        <!-- Spacer to offset the fixed nav height -->
         <div style="height: 72px"></div>
 
+        <!-- Brief Identity Statement -->
         <section class="pt-24 flex flex-col items-center justify-center text-center px-6">
             <h1 class="text-5xl sm:text-6xl font-extrabold text-gray-900 leading-tight">
                 Hi, I'm Carl LaLonde
@@ -34,6 +59,7 @@
             </a>
         </section>
 
+        <!-- About Section -->
         <section id="about" class="bg-white py-20 px-6">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="text-4xl font-bold text-gray-900">About Me</h2>
@@ -47,6 +73,108 @@
             </div>
         </section>
 
+        <!-- Image Carousel -->
+        <section class="max-w-5xl mx-auto px-6">
+            <div class="rounded-2xl bg-gray-900/80 dark:bg-gray-800/80 text-gray-200 p-6 shadow">
+                <div id="image-carousel" class="splide" aria-label="About photos & notes">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+
+                        <!-- Slide 1 -->
+                        <li class="splide__slide">
+                            <article class="grid sm:grid-cols-2 gap-5 items-start">
+                                <div class="w-full h-48 sm:h-56 rounded-lg bg-gray-700/20 dark:bg-gray-900/20
+                                        flex items-center justify-center overflow-hidden">
+                                    <img
+                                        src="/assets/images/just me.png"
+                                        alt="Carl LaLonde on a wooden bridge dressed for a formal event"
+                                        class="max-h-full max-w-full object-contain"
+                                        loading="lazy" decoding="async" />
+                                </div>
+                                <p class="text-base leading-relaxed text-gray-300">
+                                    I build React Native + Node apps with a UX focus. Outside of work, I’m usually
+                                    cooking, camping, or making things with my hands.
+                                </p>
+                            </article>
+                        </li>
+
+                        <!-- Slide 2 -->
+                        <li class="splide__slide">
+                            <article class="grid sm:grid-cols-2 gap-5 items-start">
+                                <img
+                                    src="/assets/images/Chair Theif Dasha.png"
+                                    alt="Dog lounging in a chair"
+                                    class="w-full h-48 sm:h-56 object-cover rounded-lg"
+                                    loading="lazy" decoding="async" />
+                                <p class="text-base leading-relaxed text-gray-300">
+                                    Meet Dasha, chair thief and occasional code reviewer!
+                                </p>
+                            </article>
+                        </li>
+
+                        <!-- Slide 3 -->
+                        <li class="splide__slide">
+                            <article class="grid sm:grid-cols-2 gap-5 items-start">
+                                <img
+                                    src="/assets/images/Reese's Cheesecake.png"
+                                    alt="Chocolate–peanut butter cheesecake with peanut butter cups"
+                                    class="w-full h-48 sm:h-56 object-cover rounded-lg"
+                                    loading="lazy" decoding="async" />
+                                <p class="text-base leading-relaxed text-gray-300">
+                                    Reese’s cheesecake: all tests passed, zero leftovers.
+                                </p>
+                            </article>
+                        </li>
+
+                        <!-- Slide 4 -->
+                        <li class="splide__slide">
+                            <article class="grid sm:grid-cols-2 gap-5 items-start">
+                                <img
+                                    src="/assets/images/Wood Turning.JPG"
+                                    alt="Turned wooden tree and snowman figurines"
+                                    class="w-full h-48 sm:h-56 object-cover rounded-lg"
+                                    loading="lazy" decoding="async" />
+                                <p class="text-base leading-relaxed text-gray-300">
+                                    Weekend lathe therapy: tree + snowman. Splinters: 0, joy: 10/10.
+                                </p>
+                            </article>
+                        </li>
+
+                        <!-- Slide 5 -->
+                        <li class="splide__slide">
+                            <article class="grid sm:grid-cols-2 gap-5 items-start">
+                                <img
+                                    src="/assets/images/Wait Walk Anna.png"
+                                    alt="Carl LaLonde on a wooden bridge dressed for a formal event"
+                                    class="w-full h-48 sm:h-56 object-cover rounded-lg"
+                                    loading="lazy" decoding="async" />
+                                <p class="text-base leading-relaxed text-gray-300">
+                                    She waits so patiently for her walks.
+                                </p>
+                            </article>
+                        </li>
+
+                        <!-- Slide 6 -->
+                        <li class="splide__slide">
+                            <article class="grid sm:grid-cols-2 gap-5 items-start">
+                                <img
+                                    src="/assets/images/Wife&I Adventure.png"
+                                    alt="Carl LaLonde on a wooden bridge dressed for a formal event"
+                                    class="w-full h-48 sm:h-56 object-cover rounded-lg"
+                                    loading="lazy" decoding="async" />
+                                <p class="text-base leading-relaxed text-gray-300">
+                                    Wife and I out for a day hike/adventure!
+                                </p>
+                            </article>
+                        </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
         <section id="projects" class="bg-gray-100 py-20 px-6">
             <div class="max-w-6xl mx-auto text-center">
                 <h2 class="text-4xl font-bold text-gray-900">Projects</h2>
@@ -115,13 +243,13 @@
                     <!-- Column 1 -->
                     <div>
                         <h3 class="text-xl font-semibold text-gray-700 mb-2">Languages</h3>
-                        <p class="text-gray-600">Java, Python< C++, JavaScript</p>
+                        <p class="text-gray-600">Java, Python, C++, JavaScript</p>
 
                         <h3 class="text-xl font-semibold text-gray-700 mt-6 mb-2">Mobile development</h3>
                         <p class="text-gray-600">React Native, Expo, Android Studio, SQLite</p>
 
                         <h3 class="text-xl font-semibold text-gray-700 mt-6 mb-2">Web & Backend</h3>
-                        <p class="text-gray=600">Node.js, Express.js, MongoDB, RESTful APIs</p>
+                        <p class="text-gray-600">Node.js, Express.js, MongoDB, RESTful APIs</p>
                     </div>
 
                     <!-- Column 2 -->
@@ -151,7 +279,7 @@
 
         <!-- Contact Section -->
         <section id="contact" class="bg-white py-20 px-6">
-            <div class=""max-w-3xl mx-auto text-center">
+            <div class="max-w-3xl mx-auto text-center">
                 <h2 class="text-4xl font-bold text-gray-900 text-center">Contact Me</h2>
                 <p class="mt-4 text-lg text-gray-600 text-center">
                     Have a question or want to work together? Fill out the form below.
@@ -193,7 +321,7 @@
         </section>
 
         <h1 class="text-4xl font-bold text-center mt-20">Welcome to My Portfolio</h1>
-        <script src="script.js"></script>
+        <!-- <script src="script.js"></script> -->
 
         <!-- Footer -->
         <footer class="bg-white py-10 px-6 border-t">

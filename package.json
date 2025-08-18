@@ -1,0 +1,30 @@
+{
+  "name": "portfolio-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "dev": "postcss ./src/styles.css -o ./dist/styles.css --watch",
+    "build": "postcss ./src/styles.css -o ./dist/styles.css --env production",
+    "preview": "npx serve ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Carl32623/portfolio-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Carl32623/portfolio-website/issues"
+  },
+  "homepage": "https://github.com/Carl32623/portfolio-website#readme",
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.12",
+    "@tailwindcss/typography": "^0.5.16",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1",
+    "tailwindcss": "^4.1.12"
+  }
+}

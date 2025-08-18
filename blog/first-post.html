@@ -1,15 +1,26 @@
+<!--
+  File: blog/first-post.html
+  Title: Meet Carl: A Little Background
+  Purpose: Individual blog article page with readable, accessible typography.
+  Tech: Tailwind CSS via CDN (Typography plugin recommended for .prose classes).
+  Accessibility: Semantic landmarks (<article>), descriptive links, <time> element.
+  Author: Carl LaLonde
+  Last Updated: 2025-08-18
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meet Carl: A Little Background</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../dist/styles.css" />
+        <script src="../script.js" defer></script>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
   <article class="max-w-3xl mx-auto px-6 py-10 prose prose-neutral">
-    <a href="./index.html" class="text-blue-600 hover:underline">← Back to blog</a>
+    <a href="/blog/index.html" class="text-blue-600 hover:underline">← Back to blog</a>
     <h1>Meet Carl: A Little Background</h1>
     <p class="text-sm text-gray-500">Aug 2025 • 5 min read</p>
     <br>
