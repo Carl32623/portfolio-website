@@ -224,3 +224,111 @@ document.addEventListener('DOMContentLoaded', function () {
     speed: prefersReduced ? 0 : 500,
   }).mount();
 });
+
+// ===== YouTube modal for project demo (robust + fallback) =====
+document.addEventListener("DOMContentLoaded", () => {
+  const modal  = document.getElementById("video-modal");
+  const iframe = document.getElementById("video-iframe");
+  const extLink = document.getElementById("video-fallback");
+  if (!modal || !iframe) return;
+
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const AUTOPLAY = prefersReduced ? 0 : 1;
+  const ORIGIN   = encodeURIComponent(location.origin);
+
+  // Build final embed URL
+  const buildEmbed = (id, start) => {
+    const qs = new URLSearchParams({
+      rel: "0",
+      autoplay: String(AUTOPLAY),
+      origin: location.origin,   // helps some playback contexts
+      playsinline: "1",
+      modestbranding: "1"
+    });
+    if (start) qs.set("start", String(start));
+    return `https://www.youtube.com/embed/${id}?${qs.toString()}`;
+  };
+
+  // Build a normal watch URL for the "Open on YouTube" link
+  const buildWatch = (id, start) => {
+    const qs = new URLSearchParams({ v: id });
+    if (start) qs.set("t", String(start));
+    return `https://www.youtube.com/watch?${qs.toString()}`;
+  };
+
+  // Parse timestamps like ?t=30, &start=25, or #t=1m20s
+  const getStart = (u) => {
+    const raw = u.searchParams.get("t") || u.searchParams.get("start") || u.hash.replace("#", "");
+    if (!raw) return 0;
+    const m = /(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?$/i.exec(raw);
+    if (m) {
+      const h  = parseInt(m[1] || "0", 10);
+      const mm = parseInt(m[2] || "0", 10);
+      const s  = parseInt(m[3] || "0", 10) || parseInt(raw, 10) || 0;
+      return h * 3600 + mm * 60 + s;
+    }
+    const n = parseInt(raw, 10);
+    return isNaN(n) ? 0 : n;
+  };
+
+  // Return { id, start } from any input
+  const parseVideo = (input) => {
+    try {
+      if (/^[\w-]{10,12}$/.test(input)) return { id: input, start: 0 };
+      const u = new URL(input);
+      const start = getStart(u);
+      const host = u.hostname.toLowerCase().replace(/^www\./, "");
+      if (host === "youtu.be") {
+        const id = u.pathname.replace(/^\/+/, "").split(/[/?#]/)[0];
+        return { id, start };
+      }
+      if (u.pathname.startsWith("/shorts/")) {
+        const id = u.pathname.replace(/^\/shorts\//, "").split(/[/?#]/)[0];
+        return { id, start };
+      }
+      const v = u.searchParams.get("v");
+      if (v) return { id: v, start };
+      return null;
+    } catch {
+      return null;
+    }
+  };
+
+  const open = (videoInput) => {
+    const parsed = parseVideo(videoInput);
+    // If we couldn't parse, just try to show whatever we got and set the fallback link
+    if (!parsed) {
+      iframe.src = videoInput;
+      if (extLink) extLink.href = videoInput;
+    } else {
+      const { id, start } = parsed;
+      iframe.src = buildEmbed(id, start);
+      if (extLink) extLink.href = buildWatch(id, start);
+    }
+
+    modal.classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+    modal.querySelector("[data-close]")?.focus();
+  };
+
+  const close = () => {
+    iframe.src = ""; // stop playback
+    modal.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+  };
+
+  // Open on any element with [data-video]
+  document.querySelectorAll("[data-video]").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      const url = el.getAttribute("data-video");
+      if (url) open(url);
+    });
+  });
+
+  // Close handlers
+  modal.querySelectorAll("[data-close]").forEach((btn) => btn.addEventListener("click", close));
+  document.addEventListener("keydown", (e) => {
+    if (!modal.classList.contains("hidden") && e.key === "Escape") close();
+  });
+}); 

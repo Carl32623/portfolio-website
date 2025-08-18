@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CS-340 Project Two: Building a Rescue-Dog Dashboard</title>
+  <link rel="stylesheet" href="../dist/styles.css" />
+        <script src="../script.js" defer></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <article class="max-w-3xl mx-auto px-6 py-10 prose prose-neutral">
+    <a href="./index.html" class="text-blue-600 hover:underline">← Back to blog</a>
+    <br>
+    <h1>CS-340 Project Two: Building a Rescue-Dog Dashboard</h1>
+    <p class="text-sm text-gray-500">Aug 2025 • 6–8 min read</p>
+    <br>
+
+    <p>
+      For my CS-340 Client/Server Development course, Project Two was to
+      ship a small but real dashboard that helps <em>Grazioso Salvare</em>
+      quickly find dogs suited for specific rescue scenarios using the
+      Austin Animal Center Outcomes dataset. I connected a MongoDB data
+      store to an interactive web UI so staff can filter animals, visualize
+      top breeds, and see locations on a map—without touching the database.
+    </p>
+    <br>
+
+    <h2>What I built</h2>
+    <br>
+    <p>
+      The dashboard has four main features:
+    </p>
+    <ul>
+      <li>Filter buttons for <strong>Water Rescue</strong>, <strong>Mountain/Wilderness</strong>, and <strong>Disaster/Individual Tracking</strong> (plus Reset).</li>
+      <li>A responsive data table that updates to match the chosen filter.</li>
+      <li>A bar chart of “Top Breeds” for the current filter.</li>
+      <li>An interactive map that auto-centers when you select an animal in the table.</li>
+    </ul>
+    <p>
+      That mix came straight from the project brief and my ReadMe for the deliverable, which also outlines the toolchain and MVC-ish design I used.
+    </p>
+    <br>
+
+    <figure>
+      <img src="../assets/images/cs340-p2-table.png" alt="Dashboard table with rescue filters above it" />
+      <figcaption>The table view with the rescue filters above it.</figcaption>
+    </figure>
+    <br>
+
+    <figure>
+      <img src="../assets/images/cs340-p2-map.png" alt="Map and bar chart side by side" />
+      <figcaption>Map + “Top Breeds” chart update as you filter/select.</figcaption>
+    </figure>
+    <br>
+
+    <h2>Stack & architecture</h2>
+    <br>
+    <ul>
+      <li><strong>MongoDB + PyMongo</strong> for storage and queries.</li>
+      <li><strong>Dash</strong> (inside Jupyter via <code>jupyter-dash</code>) for the reactive web UI.</li>
+      <li><strong>Plotly</strong> for the bar chart and <strong>dash-leaflet</strong> for the map.</li>
+    </ul>
+    <br>
+    <p>
+      Data access is wrapped in an <code>AnimalShelter</code> class that exposes simple
+      <abbr title="Create Read Update Delete">CRUD</abbr> methods. The pattern keeps the UI
+      callbacks clean and lines up nicely with the course’s MVC goals: MongoDB is the model,
+      Dash callbacks are the controller, and the Dash layout is the view. 
+    </p>
+    <br>
+    <p>
+      The <code>AnimalShelter</code> class handles <code>create</code>, <code>read</code>, <code>update</code>, and <code>delete</code>
+      with clear checks and helpful output—handy when you’re iterating on queries
+      and need quick feedback. 
+    </p>
+    <br>
+
+    <h2>Key interactions</h2>
+    <br>
+    <p>
+      Each rescue button triggers a query tailored to that scenario (e.g., age, breed, and outcome filters).
+      When the results return:
+    </p>
+    <ol>
+      <li>The table renders only the matching animals.</li>
+      <li>The “Top Breeds” bar chart recomputes from the filtered set.</li>
+      <li>Selecting a row pans/zooms the map to that animal’s coordinates.</li>
+    </ol>
+    <p>
+      It’s a tight loop: pick a rescue profile → skim candidates → click one → see it on the map.
+    </p>
+    <br>
+
+    <h2>What tripped me up (and how I fixed it)</h2>
+    <br>
+    <ul>
+      <li>
+        <strong>Coordinating multiple outputs.</strong> Dash callbacks are powerful, but you
+        have to keep inputs/outputs straight. I split logic into small, single-purpose
+        callbacks—one for table data, one for chart data, one for map state—then shared
+        lightweight derived values between them.
+      </li>
+      <br>
+      <li>
+        <strong>Query drift.</strong> It’s easy for UI filters and server-side Mongo queries to
+        get out of sync. I centralized the “filter spec” and generated the MongoDB query
+        from that single object so the UI and DB stay aligned.
+      </li>
+      <br>
+      <li>
+        <strong>Geolocation edge cases.</strong> Not all rows had clean lat/long. I added
+        basic validation so the map only places markers for valid coordinates, with a
+        friendly message when none are available.
+      </li>
+    </ul>
+    <br>
+    <br>
+
+    <h2>What I learned</h2>
+    <br>
+    <ul>
+      <li><strong>Designing to queries.</strong> UI is simpler when you start from “What question is the user asking the data?” then model the query and let the UI follow.</li><br>
+      <li><strong>Document DBs shine with varied records.</strong> The AAC dataset’s shape fits MongoDB well, and PyMongo made quick work of CRUD and filters.</li><br>
+      <li><strong>Small, composable callbacks > one giant function.</strong> It kept state bugs down and made testing bits in isolation easy.</li><br>
+      <li><strong>Maps + charts boost decision speed.</strong> The moment you see “top breeds” and a pin on a map for the selected dog, the task clicks.</li><br>
+    </ul>
+    <br>
+
+    <h2>What I’d improve next</h2><br>
+    <ul>
+      <li>Add server-side caching for popular filters to speed up first render.</li>
+      <li>Bundle the app as a lightweight container so it can run outside Jupyter more easily.</li>
+      <li>Expand rescue profiles (e.g., “Urban Search”) and expose their criteria in the UI.</li>
+      <li>Basic auth and role-based views for staff vs. admin tasks.</li>
+    </ul><br>
+
+    <h2>How to run it</h2><br>
+    <p>
+      The course deliverable runs in Jupyter with <code>jupyter-dash</code>, Dash, dash-leaflet, Plotly,
+      and PyMongo against a MongoDB that holds the Austin Animal Center dataset.
+      The ReadMe includes the quickstart and file list.
+    </p>
+    <br>
+
+    <hr />
+    <p class="text-sm">
+      Screenshots above are from my local build. If you’d like the demo or code notes,
+      feel free to reach out on the contact form.
+    </p>
+  </article>
+</body>
+</html>
