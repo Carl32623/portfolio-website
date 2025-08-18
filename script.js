@@ -11,7 +11,7 @@ function revealNow(el) {
 }
 
 if (prefersReducedMotion) {
-    //Show everything immediately withou animation
+    //Show everything immediately without animation
     document.querySelectorAll('.reveal').forEach(revealNow);
 } else {
     const observer = new IntersectionObserver(
@@ -75,3 +75,37 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+//Sticky Nav: add shadow when scroll
+document.addEventListener('DOMContentLoaded', () => {
+    const nav = document.querySelector('nav');
+    const onScroll = () => {
+        if (window.scrollY > 8) {
+            nav.classList.add('shadow-md');
+        } else {
+            nav.classList.remove('shadow-md');
+        }
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true});
+});
+
+//Smooth scroll for hash links 
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener('click', (e) => {
+            const id = a.getAttribute('href');
+            const target = document.querySelector(id);
+            if (!target) return;
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    });
+});
+
+//Auto-set the year
+document.addEventListener('DOMContentLoaded', () => {
+    const y = document.getElementById('year');
+    if (y) y.textContent = new Date().getFullYear();
+});
+
