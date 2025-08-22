@@ -59,6 +59,11 @@
     
 
     <body>
+        <!-- Where the nave bar used to be hard coded -->
+        <!-- Now a component -->
+        <div id="navbar"></div>
+
+
         <!-- Video Modal -->
         <div id="video-modal" class="fixed inset-0 z-50 hidden">
             <!-- Backdrop -->
@@ -83,56 +88,48 @@
             </div>
         </div>
 
-        <!--
-        Global Navigation
-        - Fixed at top with subtle blur for modern feel
-        - Contains anchor links to sections and external blog link
-        -->
-        <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 shadow-none py-4 px-6 flex justify-between items-center">
-            
-            <!-- Brand / Name -->
-            <div class="text-2xl font-bold text-blue-600">Carl LaLonde</div>
 
-            <!-- Primary Nav Links -->
-            <div class="space-x-6">
-                <a href="#about" class="text-gray-600 hover:text-blue-600 font-medium">About</a>
-                <a href="#projects" class="text-gray-600 hover:text-blue-600 font-medium">Projects</a>
-                <a href="#contact" class="text-gray-600 hover:text-blue-600 font-medium">Contact</a>
-                <a href="/blog/index.html" class="text-gray-600 hover:text-blue-600 font-medium">Blog</a>
+        <section
+            class="relative flex flex-col items-center text-center px-6 bg-cover bg-center text-white
+                py-32 md:py-40 gap-24"
+            style="min-height: 120vh; background-image: url('/assets/images/background.jpg');">
+
+            <!-- overlay -->
+            <div class="absolute inset-0 bg-black/50"></div>
+
+            <!-- HERO -->
+            <div class="relative z-10">
+                <div style="height: 90px"></div>
+                <h1 class="text-5xl sm:text-6xl font-extrabold leading-tight">Hi, I'm Carl LaLonde</h1>
+                <div style="height: 24px"></div>
+                <p class="text-xl mt-4 max-w-xl mx-auto">
+                    Senior college student, software developer, and upbeat guy building modern web and mobile apps.
+                </p>
+                <div style="height: 24px"></div>
+                <a href="#projects"
+                    class="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700">
+                        View My Projects
+                </a>
             </div>
-        </nav>
 
-        <!-- Spacer to offset the fixed nav height -->
-        <div style="height: 72px"></div>
+            <div style="height: 72px"></div>
 
-        <!-- Brief Identity Statement -->
-        <section class="pt-24 flex flex-col items-center justify-center text-center px-6">
-            <h1 class="text-5xl sm:text-6xl font-extrabold text-gray-900 leading-tight">
-                Hi, I'm Carl LaLonde
-            </h1>
-            <p class="text-xl text-gray-600 mt-4 max-w-xl">
-                Senior college student, software developer, and upbeat guy building modern web and mobile apps.
-            </p>
-            <a href="#projects" class="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
-                View My Projects
-            </a>
-        </section>
-
-        <!-- About Section -->
-        <section id="about" class="bg-white py-20 px-6">
-            <div class="max-w-4xl mx-auto text-center">
-                <h2 class="text-4xl font-bold text-gray-900">About Me</h2>
-                <p class="mt-6 text-lg text-gray-600 leading-relaxed">
-                    I am a Computer Science student with a concentration in software engineering.
+            <!-- ABOUT -->
+            <div class="relative z-10 max-w-4xl mx-auto">
+                <h2 class="text-4xl font-bold">About Me</h2>
+                <div style="height: 24px"></div>
+                <p class="mt-6 text-lg leading-relaxed">
+                    I am a Computer Science student with a concentration in software engineering. 
                     I love building clean, efficient and user friendly applications, whether it's 
-                    mobile app, a responsive website, or a backend API. When I am not coding, I 
-                    enjoy taking my dogs on adventures, rustic camping, and wood working projects.
-                    I also find that cooking can be a therapeutic creative outlet.
+                    mobile app, a responsive website, or a backend API. When I am not coding, I enjoy 
+                    taking my dogs on adventures, rustic camping, and wood working projects. I also 
+                    find that cooking can be a therapeutic creative outlet.
                 </p>
             </div>
         </section>
 
         <!-- Image Carousel -->
+        <div style="height: 72px"></div>
         <section class="max-w-5xl mx-auto px-6">
             <div class="rounded-2xl bg-gray-900/80 dark:bg-gray-800/80 text-gray-200 p-6 shadow">
                 <div id="image-carousel" class="splide" aria-label="About photos & notes">
@@ -438,21 +435,9 @@
             </div>
         </section>
 
-        <h1 class="text-4xl font-bold text-center mt-20">Welcome to My Portfolio</h1>
-        <!-- <script src="script.js"></script> -->
+        <!-- <h1 class="text-4xl font-bold text-center mt-20">Welcome to My Portfolio</h1> -->
+        <!-- <script src="script.js"></> -->
 
-        <!-- Footer -->
-        <footer class="bg-white py-10 px-6 border-t">
-            <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="text-gray-600">
-                © <span id="year"></span> Carl LaLonde. All rights reserved.
-                </div>
-                <div class="flex items-center gap-6 text-gray-600">
-                <a href="https://github.com/Carl32623" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">GitHub</a>
-                <a href="https://www.linkedin.com/in/carl-lalonde-78511876/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-600">LinkedIn</a>
-                <a href="mailto:carl6201@aol.com" rel="noopener noreferrer" class="hover:text-blue-600">Email</a>
-                </div>
-            </div>
-        </footer>
+        <div id="footer"></div>
     </body>
 </html>

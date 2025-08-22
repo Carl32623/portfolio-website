@@ -39,13 +39,26 @@
         </script>
     </head>
 
-    <body class="bg-gray-50 text-gray-800">
+    <body class="text-gray-800"
+        style="
+            background-image:
+            linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)),
+            url('/assets/images/blogBackground.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        ">
 
+        <!-- Where the nave bar used to be hard coded -->
+        <!-- Now a component -->
+        <div id="navbar"></div>
+        
         <!-- Page Header -->
-        <header class="max-w-5xl mx-auto px-6 py-10">
-            <h1 class="text-4xl font-extrabold text-gray-900">Blog</h1>
+        <header class="max-w-5xl mx-auto px-6 py-10 text-center">
+            <h1 class="text-4xl font-extrabold text-gray-900">Projects, Pivots & Pawprints (Online CS Degree Edition)</h1>
             <p class="mt-2 text-gray-600">Note's on projects, learning, and dogs.</p>
-            <a href="/index.html" class="mt-4 inline-block text-blue-600 hover:underline">← Back to portfolio</a>
+            
         </header>
 
         <!-- Main Content -->
@@ -86,5 +99,7 @@
                  
             </section>
         </main>
+
+        <div id="footer"></div>
     </body>
 </html>

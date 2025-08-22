@@ -332,3 +332,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!modal.classList.contains("hidden") && e.key === "Escape") close();
   });
 }); 
+
+// Load components
+function loadComponent(targetId, url, after) {
+  const mount = document.getElementById(targetId);
+  if (!mount) return;
+  fetch(url).then(r => r.text()).then(html => {
+    mount.innerHTML = html;
+    if (after) after(mount);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadComponent("navbar", "/components/navbar.html");
+  loadComponent("footer", "/components/footer.html", (root) => {
+    const y = root.querySelector("#year");
+    if (y) y.textContent = new Date().getFullYear();
+  });
+});
