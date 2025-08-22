@@ -4,8 +4,8 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "dev": "postcss ./src/styles.css -o ./dist/styles.css --watch",
-    "build": "postcss ./src/styles.css -o ./dist/styles.css --env production",
+    "dev": "tailwindcss -i ./src/input.css -o ./dist/styles.css --watch",
+    "build": "tailwindcss -i ./src/input.css -o ./dist/styles.css --minify",
     "preview": "npx serve ."
   },
   "repository": {
