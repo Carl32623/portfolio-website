@@ -350,3 +350,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (y) y.textContent = new Date().getFullYear();
   });
 });
+
+// BLOG HEADER (optional on pages)
+(() => {
+  const host = document.getElementById('blog-header');
+  if (!host) return;
+
+  fetch('/components/blog-header.html')
+    .then(r => r.text())
+    .then(tpl => {
+      const title = host.dataset.title || 'Projects, Pivots & Pawprints';
+      const subtitle = host.dataset.subtitle || 'Notes on projects, learning, and dogs.';
+      host.innerHTML = tpl
+        .replaceAll('{{title}}', title)
+        .replaceAll('{{subtitle}}', subtitle);
+    })
+    .catch(console.error);
+})();
