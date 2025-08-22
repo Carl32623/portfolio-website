@@ -1,0 +1,165 @@
+<!--
+  File: blog/first-post.html
+  Title: Meet Carl: A Little Background
+  Purpose: Individual blog article page with readable, accessible typography.
+  Tech: Tailwind CSS via CDN (Typography plugin recommended for .prose classes).
+  Accessibility: Semantic landmarks (<article>), descriptive links, <time> element.
+  Author: Carl LaLonde
+  Last Updated: 2025-08-18
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why I'm Finally Building a NAS</title>
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Why I'm Finally Building a NAS">
+  <meta property="og:description" content="A little discussion about NAS systems and why I am building one.">
+  <meta property="og:url" content="https://www.carllalonde.com/blog/dogs-and-a-laptop.html">
+  <link rel="canonical" href="https://www.carllalonde.com/blog/dogs-and-a-laptop.html">
+
+  <link rel="stylesheet" href="/dist/styles.css" />
+  <script src="/script.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZMV09HPPR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GZMV09HPPR'); // replace with your ID
+  </script>
+</head>
+
+<body class="bg-gray-50 text-gray-800"
+    style="
+            background-image:
+            linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)),
+            url('/assets/images/blogBackground.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        ">
+
+   <!-- navbar and blog header components -->
+   <div id="navbar"></div>
+   <div id="blog-header"></div>
+
+  <article class="max-w-3xl mx-auto px-6 py-10 prose prose-neutral">
+    <header class="pt-8 pb-6">
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-center">Why I'm Finally Building a NAS</h1>
+        <p class="mt-3 text-sm text-gray-500 text-center md:text-left">
+            <time datetime="2025-08-22">Aug 2025</time> • 5 min read
+        </p>
+    </header>
+    <br>
+
+    <p>
+      Earlier last week, I came home from a 10-hour work day dreaming about dinner, a shower, and my lazy chair. 
+      Instead, I walked into an active crime scene: two very happy dogs, one very unhappy side table, and a laptop 
+      that had just explored the concept of gravity.
+    </p>
+    <br>
+    <p>Was this an accident? A coordinated enrichment activity? An unsanctioned QA stress test? All I know is there 
+        was a squeaky toy pronounced legally deceased, a tail operating at helicopter speeds, and my laptop doing its 
+        best impression of a mic drop. That one’s on me—I parked a computer on a launchpad disguised as a living room.
+    </p>
+    <br>
+
+    <h2><strong>The Triage</strong></h2>
+    <br>
+    <p>
+        Step one: push the power button like it owes me money. Nothing.<br>
+        Step two: remember I have OneDrive backups.<br>
+        Step three: discover that restoring a life’s worth of files from OneDrive feels like a boss level with 17 unskippable cutscenes.<br>
+        <br>
+        Yes, the files returned. No, my sanity did not. There were version conflicts, partial syncs, and a folder that quantum-blinked in 
+        and out of existence like it was auditioning for a Marvel cameo. 
+    </p>
+    <br>
+
+    <h2><strong>Shiny New Laptop</strong></h2>
+    <br>
+    <p>
+      On the bright side, I am now the new owner of an MSI Katana 17 Laptop. Top of the line? No. 
+      Do I have games to play? Absolutely (we’ll get into that at a later date). And it boots faster 
+      than it takes my dogs to realize I opened the cheese drawer. But this whole experience reminded 
+      me of a previous thought over topic: <strong>build a home NAS</strong>, so that my data lives on my network, in 
+      my home, with backups that don’t depend on the mood swings of a cloud. 
+    </p>
+    <br>
+
+    <h2><strong>The NAS Plan</strong></h2>
+    <br>
+    <p>
+      Here’s the dream board:
+    </p>
+    <ul>
+        <li><strong>Centralized storage</strong> for projects, school work, photos—anything I don’t want yeeted off a side table.</li>
+        <li><strong>Automatic, versioned backups</strong> from laptops/phones (snapshots included, so I can undo my own heroics).</li>
+        <li><strong>Redundancy (RAID)</strong> so a single drive failure is a <em>pit stop, not a tow truck</em>.</li>
+        <li><strong>Local speed:</strong> 1&nbsp;GbE minimum; 2.5&nbsp;GbE if I’m feeling dangerous—restores shouldn’t feel like mailing a letter to myself.</li>
+        <li><strong>Offsite copy</strong> every night to a cloud bucket—coverage for fires, floods, and dogs who learn to use tools.</li>
+    </ul>
+    <br>
+
+    <h2><strong>The Setup...Hopefully</strong></h2>
+    <br>
+    <p>
+      I’m keeping this simple and hard to break: a UGREEN 2-bay box with two matching NAS rated drives 
+      (4-8TB each) in a RAID1 mirror, because when a disk dies I want a coffee break, not a kitchen fire. 
+      I’ll add a 500 GB SSD for the OS and cache/app data (logs, packages, the nerdy bits that like fast I/O), 
+      hang it on <strong>1–2.5 GbE</strong>, and back it with a small UPS so power disruptions don’t become data tragedy. 
+      What it’ll do: <strong>centralize</strong> projects/school/photos (maybe a movie here and there), <strong>run automatic versioned 
+      backups</strong> from laptops and phones, keep snapshots for easy rollbacks, and push a nightly encrypted offsite 
+      copy to the cloud. UGREEN boxes usually ship with their own OS, but I’m tempted to try a <strong>Linux distro 
+      (hello, Ubuntu)</strong> for the learning curve and flexibility.
+    </p>
+    <br>
+
+    <h2><strong>Lessons Learned</strong></h2>
+    <br>
+    <ul>
+        <li>Don’t store laptops on launchpads. Side tables next to a dog runway violates at least five OSHA rules.</li>
+        <li>Test restore, not just backups. If you haven’t practiced, you don’t have a plan. </li>
+        <li>Label everything for a confused Future You, because Future You will be confused.</li>
+        <li>Cloud is great...until it isn’t.  It’s an excellent 2nd or 3rd copy solution. First copy should live on a box that you can touch.</li>
+        <li>Buy the rubber feet, straps, and cable management now. It may not be glamorous but can be widely effective. Gravity is undefeated.</li>
+    </ul>
+    <br>
+
+    <h2><strong>The Dog Debrief</strong></h2>
+    <br>
+    <p>
+      The suspects have been reprimanded with stern looks and several belly rubs. 
+      They have expressed deep remorse by immediately taking a nap shaped like a croissant. Justice served.
+    </p>
+    <br>
+
+    <h2><strong>Your Turn</strong></h2>
+    <br>
+    <p>
+        I know some of you have glorious home labs and NAS setups that could run a small moon base. 
+        Help me not reinvent a worse wheel. What would you recommend?
+    </p>
+    <p>
+        Bonus points for photos of your setup—and extra bonus points if your pets have also contributed to your disaster recovery plan.</p>
+    <p>
+        Thanks for reading! Next time I’ll write from a chair that’s nowhere near a canine slip ‘n slide.
+        <br>
+        <br>
+        <em><strong>P.S.</strong></em> <em>If you’ve made OneDrive behave like a well-mannered butler, please share the ritual.</em>
+    </p>
+
+    <p class="max-w-3xl mx-auto px-6 mt-12">
+        <a href="/blog/index.html" class="text-blue-600 hover:underline"><strong>← Back to blog</strong></a>
+    </p>
+  </article>
+
+  <!-- Comments -->
+  <div data-include="/components/comments.html"></div>
+
+  <div id="footer"></div>
+</body>
+</html>

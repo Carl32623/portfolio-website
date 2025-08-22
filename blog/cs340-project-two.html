@@ -21,17 +21,28 @@
   </script>
 </head>
 
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50 text-gray-800"
+    style="
+            background-image:
+            linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)),
+            url('/assets/images/blogBackground.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        ">
 
   <!-- navbar and blog header components -->
   <div id="navbar"></div>
   <div id="blog-header"></div>
 
   <article class="max-w-3xl mx-auto px-6 py-10 prose prose-neutral">
-    <a href="/blog/index.html" class="text-blue-600 hover:underline">← Back to blog</a>
-    <br>
-    <h1>CS-340 Project Two: Building a Rescue-Dog Dashboard</h1>
-    <p class="text-sm text-gray-500">Aug 2025 • 6–8 min read</p>
+    <header class="pt-8 pb-6">
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-center">CS-340 Project Two: Building a Rescue-Dog Dashboard</h1>
+        <p class="mt-3 text-sm text-gray-500 text-center md:text-left">
+            <time datetime="2025-08-22">Aug 2025</time> • 6-8 min read
+        </p>
+    </header>
     <br>
 
     <p>
@@ -165,6 +176,10 @@
     <p class="text-sm">
       Screenshots above are from my local build. If you’d like the demo or code notes,
       feel free to reach out on the contact form.
+    </p>
+
+    <p class="max-w-3xl mx-auto px-6 mt-12">
+        <a href="/blog/index.html" class="text-blue-600 hover:underline"><strong>← Back to blog</strong></a>
     </p>
   </article>
 
