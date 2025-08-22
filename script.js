@@ -367,3 +367,34 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(console.error);
 })();
+
+
+// After your existing code that loads [data-include] partials:
+function mountGiscus() {
+  const container = document.querySelector('#giscus_thread');
+  if (!container || container.querySelector('iframe')) return; // already mounted
+
+  const s = document.createElement('script');
+  s.src = 'https://giscus.app/client.js';
+  s.async = true;
+  s.crossOrigin = 'anonymous';
+
+  // copy data-* attributes from container to script tag
+  Array.from(container.attributes).forEach((a) => {
+    if (a.name.startsWith('data-')) s.setAttribute(a.name, a.value);
+  });
+
+  container.appendChild(s);
+}
+
+// If you use a DOMContentLoaded handler for includes, call mountGiscus() after they load.
+// Example:
+document.addEventListener('DOMContentLoaded', async () => {
+  const includes = document.querySelectorAll('[data-include]');
+  await Promise.all(Array.from(includes).map(async (el) => {
+    const file = el.getAttribute('data-include');
+    try { const res = await fetch(file); el.innerHTML = await res.text(); }
+    catch (e) { console.error('Include failed:', file, e); }
+  }));
+  mountGiscus();
+});
