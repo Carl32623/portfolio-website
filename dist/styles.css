@@ -1208,3 +1208,11 @@
     }
   }
 }
+
+/* fade-in for included partials */
+[data-include]{display:block;}
+[data-include].is-loading{opacity:0;}
+[data-include].is-ready{opacity:1;transition:opacity .15s ease-in;}
+
+/* reserve navbar space so layout doesn't jump (tweak height to your nav) */
+#navbar{content-visibility:auto;contain-intrinsic-size:64px 100vw;}

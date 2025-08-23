@@ -10,57 +10,82 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <!-- Descriptive title for SEO and tab naming -->
-        <title>Carl LaLonde - Portfolio</title>
-        <meta name="description" content="Carl LaLonde — CS student & dev building modern web and mobile apps." />
-        <meta property="og:title" content="Carl LaLonde — Portfolio" />
-        <meta property="og:description" content="Projects in React Native, Node/Express, and MongoDB. Clean UX, practical builds." />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://carllalonde.com/assets/og/clMetaImage.png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <link rel="canonical" href="https://carllalonde.com/">
-        <meta property="og:url" content="https://carllalonde.com/"> 
-        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
-        <link rel="alternate icon" href="/assets/favicon.ico" />
-        <link rel="stylesheet" href="/dist/styles.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
-        <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
-        <script src="script.js" defer></script>
+    <title>Carl LaLonde - Portfolio</title>
+    <meta name="description" content="Carl LaLonde — CS student & dev building modern web and mobile apps." />
 
-        <script type="application/ld+json">
-            {
-            "@context": "https://schema.org",
-            "@type": "Person",
-            "name": "Carl LaLonde",
-            "url": "https://www.carllalonde.com/",
-            "sameAs": [
-                "https://github.com/Carl32623",
-                "https://www.linkedin.com/in/carl-lalonde-78511876/"
-            ],
-            "jobTitle": "Software Developer",
-            "alumniOf": "SNHU"
-            }
-        </script>
+    <!-- Open Graph -->
+    <meta property="og:title" content="Carl LaLonde — Portfolio" />
+    <meta property="og:description" content="Projects in React Native, Node/Express, and MongoDB. Clean UX, practical builds." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://carllalonde.com/assets/og/clMetaImage.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://carllalonde.com/" />
+    <link rel="canonical" href="https://carllalonde.com/" />
 
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZMV09HPPR"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-GZMV09HPPR'); // replace with your ID
-        </script>
-    </head>
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="alternate icon" href="/assets/favicon.ico" />
+
+    <!-- Perf hints for CDN -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
+    <!-- Your CSS: preload then apply -->
+    <link rel="preload" href="/dist/styles.css" as="style" />
+    <link rel="stylesheet" href="/dist/styles.css" />
+
+    <!-- Splide CSS (non-blocking) -->
+    <link
+        rel="preload"
+        href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css"
+        as="style"
+        onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css" />
+    </noscript>
+
+    <!-- Scripts -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+    <script defer src="/script.js"></script>
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Carl LaLonde",
+        "url": "https://carllalonde.com/",
+        "sameAs": [
+        "https://github.com/Carl32623",
+        "https://www.linkedin.com/in/carl-lalonde-78511876/"
+        ],
+        "jobTitle": "Software Developer",
+        "alumniOf": "SNHU"
+    }
+    </script>
+
+    <!-- Google Analytics (optional) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZMV09HPPR"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GZMV09HPPR');
+    </script>
+</head>
+
 
     
 
     <body>
         <!-- Navbar component -->
-        <div id="navbar"></div>
+        <div id="navbar" data-include="/components/navbar.html"></div>
 
 
         <!-- Video Modal -->
@@ -463,6 +488,6 @@
         <!-- <h1 class="text-4xl font-bold text-center mt-20">Welcome to My Portfolio</h1> -->
         <!-- <script src="script.js"></> -->
 
-        <div id="footer"></div>
+        <div id="footer" data-include="/components/footer.html"></div>
     </body>
 </html>

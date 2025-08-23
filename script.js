@@ -333,40 +333,40 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 }); 
 
-// Load components
-function loadComponent(targetId, url, after) {
-  const mount = document.getElementById(targetId);
-  if (!mount) return;
-  fetch(url).then(r => r.text()).then(html => {
-    mount.innerHTML = html;
-    if (after) after(mount);
-  });
-}
+// //Load components
+// function loadComponent(targetId, url, after) {
+//   const mount = document.getElementById(targetId);
+//   if (!mount) return;
+//   fetch(url).then(r => r.text()).then(html => {
+//     mount.innerHTML = html;
+//     if (after) after(mount);
+//   });
+// }
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadComponent("navbar", "/components/navbar.html");
-  loadComponent("footer", "/components/footer.html", (root) => {
-    const y = root.querySelector("#year");
-    if (y) y.textContent = new Date().getFullYear();
-  });
-});
+// document.addEventListener("DOMContentLoaded", () => {
+//   loadComponent("navbar", "/components/navbar.html");
+//   loadComponent("footer", "/components/footer.html", (root) => {
+//     const y = root.querySelector("#year");
+//     if (y) y.textContent = new Date().getFullYear();
+//   });
+// });
 
 // BLOG HEADER (optional on pages)
-(() => {
-  const host = document.getElementById('blog-header');
-  if (!host) return;
+// (() => {
+//   const host = document.getElementById('blog-header');
+//   if (!host) return;
 
-  fetch('/components/blog-header.html')
-    .then(r => r.text())
-    .then(tpl => {
-      const title = host.dataset.title || 'Projects, Pivots & Pawprints';
-      const subtitle = host.dataset.subtitle || 'Notes on projects, learning, and dogs.';
-      host.innerHTML = tpl
-        .replaceAll('{{title}}', title)
-        .replaceAll('{{subtitle}}', subtitle);
-    })
-    .catch(console.error);
-})();
+//   fetch('/components/blog-header.html')
+//     .then(r => r.text())
+//     .then(tpl => {
+//       const title = host.dataset.title || 'Projects, Pivots & Pawprints';
+//       const subtitle = host.dataset.subtitle || 'Notes on projects, learning, and dogs.';
+//       host.innerHTML = tpl
+//         .replaceAll('{{title}}', title)
+//         .replaceAll('{{subtitle}}', subtitle);
+//     })
+//     .catch(console.error);
+// })();
 
 
 // After your existing code that loads [data-include] partials:
@@ -387,14 +387,60 @@ function mountGiscus() {
   container.appendChild(s);
 }
 
-// If you use a DOMContentLoaded handler for includes, call mountGiscus() after they load.
-// Example:
-document.addEventListener('DOMContentLoaded', async () => {
-  const includes = document.querySelectorAll('[data-include]');
-  await Promise.all(Array.from(includes).map(async (el) => {
-    const file = el.getAttribute('data-include');
-    try { const res = await fetch(file); el.innerHTML = await res.text(); }
-    catch (e) { console.error('Include failed:', file, e); }
+  // If you use a DOMContentLoaded handler for includes, call mountGiscus() after they load.
+  //Example:
+// document.addEventListener('DOMContentLoaded', async () => {
+//   const includes = document.querySelectorAll('[data-include]');
+//   await Promise.all(Array.from(includes).map(async (el) => {
+//     const file = el.getAttribute('data-include');
+//     try { const res = await fetch(file); el.innerHTML = await res.text(); }
+//     catch (e) { console.error('Include failed:', file, e); }
+//   }));
+//   mountGiscus();
+// });
+
+
+/* ================================
+ *  Unified include loader (ONLY ONE)
+ * ================================ */
+document.addEventListener("DOMContentLoaded", async () => {
+  const nodes = document.querySelectorAll("[data-include]");
+  await Promise.all(Array.from(nodes).map(async (el) => {
+    el.classList.add("is-loading");
+    const url = el.getAttribute("data-include");
+    try {
+      let html = await (await fetch(url)).text();
+
+      // optional token replacement for blog header partials
+      if (el.id === "blog-header") {
+        html = html
+          .replaceAll("{{title}}", el.dataset.title || "Projects, Pivots & Pawprints")
+          .replaceAll("{{subtitle}}", el.dataset.subtitle || "Notes on projects, learning, and dogs.");
+      }
+
+      el.innerHTML = html;
+
+      // re-execute any <script> tags from the included HTML
+      el.querySelectorAll("script").forEach((old) => {
+        const s = document.createElement("script");
+        Array.from(old.attributes).forEach((a) => s.setAttribute(a.name, a.value));
+        s.text = old.textContent || "";
+        old.replaceWith(s);
+      });
+
+      // footer year if present
+      const y = el.querySelector("#year");
+      if (y && !y.textContent.trim()) y.textContent = new Date().getFullYear();
+
+    } catch (e) {
+      console.error("Include failed:", url, e);
+    } finally {
+      el.classList.remove("is-loading");
+      el.classList.add("is-ready");
+    }
   }));
-  mountGiscus();
+
+  // mount giscus after all includes (if present on this page)
+  if (typeof mountGiscus === "function") mountGiscus();
 });
+
