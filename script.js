@@ -444,3 +444,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (typeof mountGiscus === "function") mountGiscus();
 });
 
+// Mobile nav toggle (delegated so it works even when navbar is included dynamically)
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("#navToggle");
+  if (!btn) return;
+
+  const menu = document.getElementById("mobileMenu");
+  if (!menu) return;
+
+  const expanded = btn.getAttribute("aria-expanded") === "true";
+  btn.setAttribute("aria-expanded", String(!expanded));
+  menu.classList.toggle("hidden");
+});
