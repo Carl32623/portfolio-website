@@ -446,13 +446,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
-// === Mobile nav toggle (open/close reliably) ===
+// === Mobile nav: bind ONCE, simple click logic (Chrome/iOS friendly) ===
 (function () {
+  if (window.__navBound) return; // guard against double-binding
+  window.__navBound = true;
+
   function bind() {
     const btn = document.getElementById('navToggle');
     const menu = document.getElementById('mobileMenu');
     const backdrop = document.getElementById('navBackdrop');
-    if (!btn || !menu) return false;
+    if (!btn || !menu) return;
 
     const open = () => {
       btn.setAttribute('aria-expanded', 'true');
@@ -469,28 +472,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     const toggle = (e) => {
-      e.preventDefault();
+      // no preventDefault here — Chrome likes a clean click
       const expanded = btn.getAttribute('aria-expanded') === 'true';
       expanded ? close() : open();
     };
 
-    // Toggle on the button (cover stubborn iOS in-app webviews)
-    ['click', 'pointerup', 'touchend'].forEach(evt =>
-      btn.addEventListener(evt, toggle, { passive: false })
-    );
+    // Toggle on button (single 'click' is enough across Chrome/Safari/Google app)
+    btn.addEventListener('click', toggle);
 
     // Close on backdrop
     backdrop?.addEventListener('click', close);
 
-    // Close on link click inside menu
+    // Close when tapping any link in the menu
     menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
 
-    // Close on outside click/tap
-    document.addEventListener('pointerdown', (e) => {
+    // Close on outside click
+    document.addEventListener('click', (e) => {
       if (menu.classList.contains('hidden')) return;
-      const insideMenu = e.target.closest('#mobileMenu');
-      const onToggle = e.target.closest('#navToggle');
-      if (!insideMenu && !onToggle) close();
+      if (e.target.closest('#mobileMenu') || e.target.closest('#navToggle')) return;
+      close();
     });
 
     // Close on Escape
@@ -498,32 +498,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (e.key === 'Escape') close();
     });
 
-    // Close on scroll (optional but feels right on mobile)
+    // Optional: close on scroll
     window.addEventListener('scroll', () => {
       if (!menu.classList.contains('hidden')) close();
     }, { passive: true });
-
-    return true;
   }
 
-  // Bind now if navbar is already in DOM; otherwise wait for includes
-  if (!bind()) {
-    document.addEventListener('includes:ready', bind, { once: true });
+  // If you inject the navbar via [data-include], wait for it; otherwise bind on DOM ready
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    bind();
+  } else {
     document.addEventListener('DOMContentLoaded', bind, { once: true });
+    document.addEventListener('includes:ready', bind, { once: true });
   }
 })();
-
-
-
-// // Mobile nav toggle (delegated so it works even when navbar is included dynamically)
-// document.addEventListener("click", (e) => {
-//   const btn = e.target.closest("#navToggle");
-//   if (!btn) return;
-
-//   const menu = document.getElementById("mobileMenu");
-//   if (!menu) return;
-
-//   const expanded = btn.getAttribute("aria-expanded") === "true";
-//   btn.setAttribute("aria-expanded", String(!expanded));
-//   menu.classList.toggle("hidden");
-// });
