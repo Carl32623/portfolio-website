@@ -515,15 +515,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
-// Mobile nav toggle (delegated so it works even when navbar is included dynamically)
-document.addEventListener("click", (e) => {
-  const btn = e.target.closest("#navToggle");
-  if (!btn) return;
+// // Mobile nav toggle (delegated so it works even when navbar is included dynamically)
+// document.addEventListener("click", (e) => {
+//   const btn = e.target.closest("#navToggle");
+//   if (!btn) return;
 
-  const menu = document.getElementById("mobileMenu");
-  if (!menu) return;
+//   const menu = document.getElementById("mobileMenu");
+//   if (!menu) return;
 
-  const expanded = btn.getAttribute("aria-expanded") === "true";
-  btn.setAttribute("aria-expanded", String(!expanded));
-  menu.classList.toggle("hidden");
-});
+//   const expanded = btn.getAttribute("aria-expanded") === "true";
+//   btn.setAttribute("aria-expanded", String(!expanded));
+//   menu.classList.toggle("hidden");
+// });
