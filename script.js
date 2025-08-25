@@ -442,73 +442,83 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // mount giscus after all includes (if present on this page)
   if (typeof mountGiscus === "function") mountGiscus();
+
+  // ✅ Tell other code that includes are ready
+  document.dispatchEvent(new Event("includes:ready"))
 });
 
 
 
-// === Mobile nav: bind ONCE, simple click logic (Chrome/iOS friendly) ===
+// === Mobile nav: delegated, bind-once, Chrome/iOS friendly ===
 (function () {
-  if (window.__navBound) return; // guard against double-binding
+  if (window.__navBound) return;
   window.__navBound = true;
 
-  function bind() {
-    const btn = document.getElementById('navToggle');
-    const menu = document.getElementById('mobileMenu');
-    const backdrop = document.getElementById('navBackdrop');
+  function getEls() {
+    return {
+      btn: document.getElementById('navToggle'),
+      menu: document.getElementById('mobileMenu'),
+      backdrop: document.getElementById('navBackdrop'),
+    };
+  }
+
+  function openMenu() {
+    const { btn, menu, backdrop } = getEls();
     if (!btn || !menu) return;
-
-    const open = () => {
-      btn.setAttribute('aria-expanded', 'true');
-      menu.classList.remove('hidden');
-      backdrop?.classList.remove('hidden');
-      document.documentElement.classList.add('overflow-hidden');
-    };
-
-    const close = () => {
-      btn.setAttribute('aria-expanded', 'false');
-      menu.classList.add('hidden');
-      backdrop?.classList.add('hidden');
-      document.documentElement.classList.remove('overflow-hidden');
-    };
-
-    const toggle = (e) => {
-      // no preventDefault here — Chrome likes a clean click
-      const expanded = btn.getAttribute('aria-expanded') === 'true';
-      expanded ? close() : open();
-    };
-
-    // Toggle on button (single 'click' is enough across Chrome/Safari/Google app)
-    btn.addEventListener('click', toggle);
-
-    // Close on backdrop
-    backdrop?.addEventListener('click', close);
-
-    // Close when tapping any link in the menu
-    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
-
-    // Close on outside click
-    document.addEventListener('click', (e) => {
-      if (menu.classList.contains('hidden')) return;
-      if (e.target.closest('#mobileMenu') || e.target.closest('#navToggle')) return;
-      close();
-    });
-
-    // Close on Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') close();
-    });
-
-    // Optional: close on scroll
-    window.addEventListener('scroll', () => {
-      if (!menu.classList.contains('hidden')) close();
-    }, { passive: true });
+    btn.setAttribute('aria-expanded', 'true');
+    menu.classList.remove('hidden');
+    backdrop?.classList.remove('hidden');
+    document.documentElement.classList.add('overflow-hidden');
   }
 
-  // If you inject the navbar via [data-include], wait for it; otherwise bind on DOM ready
-  if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    bind();
-  } else {
-    document.addEventListener('DOMContentLoaded', bind, { once: true });
-    document.addEventListener('includes:ready', bind, { once: true });
+  function closeMenu() {
+    const { btn, menu, backdrop } = getEls();
+    if (!btn || !menu) return;
+    btn.setAttribute('aria-expanded', 'false');
+    menu.classList.add('hidden');
+    backdrop?.classList.add('hidden');
+    document.documentElement.classList.remove('overflow-hidden');
   }
+
+  function isOpen() {
+    const { btn } = getEls();
+    return btn?.getAttribute('aria-expanded') === 'true';
+  }
+
+  // Toggle on button
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#navToggle')) return;
+    isOpen() ? closeMenu() : openMenu();
+  });
+
+  // Close on backdrop
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('#navBackdrop')) closeMenu();
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    const insideMenu = e.target.closest('#mobileMenu');
+    const onToggle = e.target.closest('#navToggle');
+    if (!onToggle && !insideMenu && isOpen()) closeMenu();
+  });
+
+  // Close on any mobile menu link
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('#mobileMenu a');
+    if (link) closeMenu();
+  });
+
+  // Escape closes
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen()) closeMenu();
+  });
+
+  // Optional: close on scroll
+  window.addEventListener('scroll', () => {
+    if (isOpen()) closeMenu();
+  }, { passive: true });
+
+  // If includes are injected after DOMContentLoaded, ensure elements exist before first use
+  document.addEventListener('includes:ready', () => {/* no-op; handlers are delegated */}, { once: true });
 })();
