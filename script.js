@@ -444,6 +444,77 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (typeof mountGiscus === "function") mountGiscus();
 });
 
+
+
+// === Mobile nav toggle (open/close reliably) ===
+(function () {
+  function bind() {
+    const btn = document.getElementById('navToggle');
+    const menu = document.getElementById('mobileMenu');
+    const backdrop = document.getElementById('navBackdrop');
+    if (!btn || !menu) return false;
+
+    const open = () => {
+      btn.setAttribute('aria-expanded', 'true');
+      menu.classList.remove('hidden');
+      backdrop?.classList.remove('hidden');
+      document.documentElement.classList.add('overflow-hidden');
+    };
+
+    const close = () => {
+      btn.setAttribute('aria-expanded', 'false');
+      menu.classList.add('hidden');
+      backdrop?.classList.add('hidden');
+      document.documentElement.classList.remove('overflow-hidden');
+    };
+
+    const toggle = (e) => {
+      e.preventDefault();
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      expanded ? close() : open();
+    };
+
+    // Toggle on the button (cover stubborn iOS in-app webviews)
+    ['click', 'pointerup', 'touchend'].forEach(evt =>
+      btn.addEventListener(evt, toggle, { passive: false })
+    );
+
+    // Close on backdrop
+    backdrop?.addEventListener('click', close);
+
+    // Close on link click inside menu
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+
+    // Close on outside click/tap
+    document.addEventListener('pointerdown', (e) => {
+      if (menu.classList.contains('hidden')) return;
+      const insideMenu = e.target.closest('#mobileMenu');
+      const onToggle = e.target.closest('#navToggle');
+      if (!insideMenu && !onToggle) close();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+
+    // Close on scroll (optional but feels right on mobile)
+    window.addEventListener('scroll', () => {
+      if (!menu.classList.contains('hidden')) close();
+    }, { passive: true });
+
+    return true;
+  }
+
+  // Bind now if navbar is already in DOM; otherwise wait for includes
+  if (!bind()) {
+    document.addEventListener('includes:ready', bind, { once: true });
+    document.addEventListener('DOMContentLoaded', bind, { once: true });
+  }
+})();
+
+
+
 // Mobile nav toggle (delegated so it works even when navbar is included dynamically)
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("#navToggle");
