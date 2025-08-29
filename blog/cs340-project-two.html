@@ -1,8 +1,22 @@
+<!-- 
+  ===========================================================
+  File: blog/cs340-project-two.html
+  Title: CS-340 Project Two — Building a Rescue-Dog Dashboard
+  Purpose: Individual article page with accessible, readable typography
+  Tech Stack: Tailwind CSS via CDN (consider Typography plugin for .prose)
+  Accessibility: Semantic landmarks (<article>), descriptive links, <time>, figure/figcaption
+  Author: Carl LaLonde
+  Last Updated: 2025-08-22
+  ===========================================================
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <!-- Page Title & Metadata -->
   <title>CS-340 Project Two: Building a Rescue-Dog Dashboard</title>
   <meta property="og:type" content="article">
   <meta property="og:title" content="CS-340 Project Two: Building a Rescue-Dog Dashboard">
@@ -10,22 +24,27 @@
   <meta property="og:url" content="https://carllalonde.com/blog/cs340-project-two.html">
   <link rel="canonical" href="https://carllalonde.com/blog/cs340-project-two.html">
 
+  <!-- Social Sharing --> 
   <meta property="og:image" content="https://carllalonde.com/assets/og/clMetaImage.png" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Screenshot/hero for 'CS-340 Project Two: Building a Rescue-Dog Dashboard'" />
-<meta property="og:site_name" content="Carl’s Blog" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Screenshot/hero for 'CS-340 Project Two: Building a Rescue-Dog Dashboard'" />
+  <meta property="og:site_name" content="Carl’s Blog" />
 
-<link rel="preload" as="image" href="/assets/images/blogBackground.jpg" fetchpriority="high">
+  <!-- Preload background for faster first paint -->
+  <link rel="preload" as="image" href="/assets/images/blogBackground.jpg" fetchpriority="high">
 
+  <!-- CSS & JS -->
   <link rel="stylesheet" href="/dist/styles.css" />
   <script src="/script.js" defer></script>
+
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZMV09HPPR"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-GZMV09HPPR'); // replace with your ID
+    gtag('config', 'G-GZMV09HPPR'); 
   </script>
 </head>
 
@@ -40,10 +59,11 @@
             background-repeat: no-repeat;
         ">
 
-  <!-- navbar and blog header components -->
+  <!-- ================= NAVBAR & BLOG HEADER ================= -->
   <div id="navbar" data-include="/components/navbar.html"></div>
   <div id="blog-header" data-include="/components/blog-header.html" data-title="…" data-subtitle="…"></div>
 
+  <!-- ================= ARTICLE ================= -->
   <article class="max-w-3xl mx-auto px-6 py-10 prose prose-neutral">
     <header class="pt-8 pb-6">
         <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-center">CS-340 Project Two: Building a Rescue-Dog Dashboard</h1>
@@ -191,9 +211,10 @@
     </p>
   </article>
 
-  <!-- Comments -->
+  <!-- ================= COMMENTS ================= -->
   <div data-include="/components/comments.html"></div>
 
+  <!-- ================= FOOTER ================= -->
   <div id="footer" data-include="/components/footer.html"></div>
 </body>
 </html>

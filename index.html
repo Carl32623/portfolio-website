@@ -1,11 +1,13 @@
-<!--
+<!-- 
+  ===========================================================
   File: index.html
-  Title: Carl LaLonde — Portfolio
-  Purpose: Landing page with about, projects, skills, resume, contact, and footer.
-  Tech: Tailwind CSS via CDN (production should consider a compiled build for performance).
-  Accessibility: Uses semantic landmarks, labels, and focusable nav links.
+  Project: Carl LaLonde — Portfolio
+  Purpose: Personal portfolio site showcasing skills, projects, and contact info.
+  Tech Stack: Tailwind CSS (via CDN), Splide.js (carousel), Formspree (contact form)
+  Accessibility: Semantic landmarks, ARIA labels, keyboard-accessible navigation
   Author: Carl LaLonde
   Last Updated: 2025-08-18
+  ===========================================================
 -->
 
 <!DOCTYPE html>
@@ -14,10 +16,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Metadata -->
     <title>Carl LaLonde - Portfolio</title>
     <meta name="description" content="Carl LaLonde — CS student & dev building modern web and mobile apps." />
 
-    <!-- Open Graph -->
+    <!-- Open Graph/Social Sharing -->
     <meta property="og:title" content="Carl LaLonde — Portfolio" />
     <meta property="og:description" content="Projects in React Native, Node/Express, and MongoDB. Clean UX, practical builds." />
     <meta property="og:type" content="website" />
@@ -27,22 +30,23 @@
     <meta property="og:url" content="https://carllalonde.com/" />
     <link rel="canonical" href="https://carllalonde.com/" />
 
-    <!-- Icons -->
+    <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
     <link rel="alternate icon" href="/assets/favicon.ico" />
 
-    <!-- Perf hints for CDN -->
+    <!-- Performance hints -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
-    <!-- Your CSS: preload then apply -->
+    <!-- Tailwinds build output -->
     <link rel="preload" href="/dist/styles.css" as="style" />
     <link rel="stylesheet" href="/dist/styles.css" />
 
+    <!-- Preload Here Background -->
     <link rel="preload" as="image" href="/assets/images/background.jpg" fetchpriority="high">
 
 
-    <!-- Splide CSS (non-blocking) -->
+    <!-- Splide CSS (non-blocking load pattern) -->
     <link
         rel="preload"
         href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css"
@@ -73,7 +77,7 @@
     }
     </script>
 
-    <!-- Google Analytics (optional) -->
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZMV09HPPR"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -87,13 +91,13 @@
     
 
     <body>
-        <!-- Navbar component -->
+        <!-- ================= NAVBAR ================= -->
         <div id="navbar" data-include="/components/navbar.html"></div>
 
 
-        <!-- Video Modal -->
+        <!-- ================= VIDEO MODAL ================= -->
+        <!-- Accessible modal for embedded YouTube demos -->
         <div id="video-modal" class="fixed inset-0 z-50 hidden">
-            <!-- Backdrop -->
             <button type="button" data-close
                 class="absolute inset-0 bg-black/70" aria-label="Close video"></button>
 
@@ -115,7 +119,7 @@
             </div>
         </div>
 
-
+        <!-- ================= HERO SECTION ================= -->
         <section
             class="relative flex flex-col items-center text-center px-6 bg-cover bg-center text-white
                 py-32 md:py-40 gap-24"
@@ -132,14 +136,14 @@
                 <p class="text-xl mt-4 max-w-xl mx-auto">
                     Senior college student, software developer, and upbeat guy building modern web and mobile apps.
                 </p>
-                <!-- <div style="height: 8px"></div> -->
+                
                 <a href="#projects"
                     class="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700">
                         View My Projects
                 </a>
             </div>
 
-            <!-- <div style="height: 24px"></div> -->
+            
 
             <!-- ABOUT -->
             <div class="relative z-10 max-w-4xl mx-auto space-y-6">
@@ -155,7 +159,7 @@
             </div>
         </section>
 
-        <!-- Image Carousel -->
+        <!-- ================= IMAGE CAROUSEL ================= --> 
         <div style="height: 72px"></div>
         <section class="max-w-5xl mx-auto px-6">
             <div class="rounded-2xl bg-gray-900/80 dark:bg-gray-800/80 text-gray-200 p-6 shadow">
@@ -257,7 +261,7 @@
             </div>
         </section>
 
-        <!-- Projects Section -->
+        <!-- ================= PROJECTS ================= -->
         <section id="projects" class="bg-gray-100 py-20 px-6">
             <div class="max-w-6xl mx-auto text-center">
                 <h2 class="text-4xl font-bold text-gray-900">Projects</h2>
@@ -361,7 +365,7 @@
                         </p>
 
                         <div class="mt-4 flex flex-wrap gap-3">
-                            <!-- Watch demo (opens your YouTube modal) -->
+                            <!-- Watch demo (opens YouTube modal) -->
                             <button
                                 type="button"
                                 data-video="https://youtu.be/O-c43R5mnKs"
@@ -402,7 +406,7 @@
             </div>
         </section>
 
-        <!-- Skills Section-->
+        <!-- ================= SKILLS ================= -->
         <section id="skills" class="py-12 bg-gray-100">
             <div class="max-w-5xl mx-auto px-6">
                 <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Skills</h2>
@@ -435,7 +439,7 @@
             </div>
         </section>
 
-        <!-- Resume Download Section -->
+        <!-- ================= RESUME ================= -->
         <section id="resume" class="py-12 bg-white">
             <div class="max-w-3xl mx-auto px-6 text-center">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6">Download My Resume</h2>
@@ -445,7 +449,7 @@
             </div>
         </section>
 
-        <!-- Contact Section -->
+        <!-- ================= CONTACT FORM ================= -->
         <section id="contact" class="bg-white py-20 px-6">
             <div class="max-w-3xl mx-auto text-center">
                 <h2 class="text-4xl font-bold text-gray-900 text-center">Contact Me</h2>
@@ -488,9 +492,7 @@
             </div>
         </section>
 
-        <!-- <h1 class="text-4xl font-bold text-center mt-20">Welcome to My Portfolio</h1> -->
-        <!-- <script src="script.js"></> -->
-
+        <!-- ================= FOOTER ================= -->
         <div id="footer" data-include="/components/footer.html"></div>
     </body>
 </html>

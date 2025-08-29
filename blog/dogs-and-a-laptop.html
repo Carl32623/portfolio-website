@@ -1,11 +1,13 @@
-<!--
-  File: blog/first-post.html
-  Title: Meet Carl: A Little Background
-  Purpose: Individual blog article page with readable, accessible typography.
-  Tech: Tailwind CSS via CDN (Typography plugin recommended for .prose classes).
-  Accessibility: Semantic landmarks (<article>), descriptive links, <time> element.
+<!-- 
+  ===========================================================
+  File: blog/dogs-and-a-laptop.html
+  Title: Why I'm Finally Building a NAS
+  Purpose: Individual blog article page with accessible, readable typography
+  Tech Stack: Tailwind CSS via CDN (consider Typography plugin for .prose)
+  Accessibility: Semantic landmarks (<article>), descriptive links, <time>, figure/figcaption
   Author: Carl LaLonde
-  Last Updated: 2025-08-18
+  Last Updated: 2025-08-22
+  ===========================================================
 -->
 
 <!DOCTYPE html>
@@ -13,6 +15,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Page Title & Metadata -->
   <title>Why I'm Finally Building a NAS</title>
   <meta property="og:type" content="article">
   <meta property="og:title" content="Why I'm Finally Building a NAS">
@@ -20,23 +24,27 @@
   <meta property="og:url" content="https://carllalonde.com/blog/dogs-and-a-laptop.html">
   <link rel="canonical" href="https://carllalonde.com/blog/dogs-and-a-laptop.html">
 
+  <!-- Social Sharing -->
   <meta property="og:image" content="https://carllalonde.com/assets/og/clMetaImage.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Screenshot/hero for 'Why I'm Finally Building a NAS'" />
-    <meta property="og:site_name" content="Carl’s Blog" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Screenshot/hero for 'Why I'm Finally Building a NAS'" />
+  <meta property="og:site_name" content="Carl’s Blog" />
 
-    <link rel="preload" as="image" href="/assets/images/blogBackground.jpg" fetchpriority="high">
+  <!-- Preload background for faster first paint -->
+  <link rel="preload" as="image" href="/assets/images/blogBackground.jpg" fetchpriority="high">
 
-
+  <!-- CSS & JS -->
   <link rel="stylesheet" href="/dist/styles.css" />
   <script src="/script.js" defer></script>
+
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZMV09HPPR"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-GZMV09HPPR'); // replace with your ID
+    gtag('config', 'G-GZMV09HPPR');
   </script>
 </head>
 
@@ -51,10 +59,11 @@
             background-repeat: no-repeat;
         ">
 
-   <!-- navbar and blog header components -->
+   <!-- ================= NAVBAR & BLOG HEADER ================= -->
    <div id="navbar" data-include="/components/navbar.html"></div>
    <div id="blog-header" data-include="/components/blog-header.html" data-title="…" data-subtitle="…"></div>
 
+   <!-- ================= ARTICLE ================= -->
   <article class="max-w-3xl mx-auto px-6 py-10 prose prose-neutral">
     <header class="pt-8 pb-6">
         <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-center">Why I'm Finally Building a NAS</h1>
@@ -166,9 +175,10 @@
     </p>
   </article>
 
-  <!-- Comments -->
+  <!-- ================= COMMENTS ================= -->
   <div data-include="/components/comments.html"></div>
 
+  <!-- ================= FOOTER ================= -->
   <div id="footer" data-include="/components/footer.html"></div>
 </body>
 </html>

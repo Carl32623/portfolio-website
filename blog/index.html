@@ -1,19 +1,24 @@
-<!--
+<!-- 
+  ===========================================================
   File: blog/index.html
-  Title: Carl's Blog
-  Purpose: Lists blog posts with links to individual articles.
-  Tech: Tailwind CSS via CDN (fine for dev; consider a build step for production).
-  Accessibility: Semantic landmarks (header/main), descriptive link text, readable hierarchy.
+  Project: Carl's Blog
+  Purpose: Lists blog posts with links to individual articles
+  Tech Stack: Tailwind CSS via CDN (build step recommended for production)
+  Accessibility: Semantic landmarks (header/main), descriptive links, readable hierarchy
   Author: Carl LaLonde
   Last Updated: 2025-08-18
+  ===========================================================
 -->
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- Metadata -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Carl LaLonde — CS student & dev building modern web and mobile apps." />
+
+        <!-- Open Graph/Social Sharing -->
         <meta property="og:title" content="Carl's Blog"/>
         <meta property="og:description" content="Notes on projects, learning, and life with two dogs." />
         <meta property="og:type" content="website" />
@@ -23,21 +28,29 @@
         <meta property="og:image:height" content="630" />
         <link rel="canonical" href="https://carllalonde.com/blog/">
 
+        <!-- Favicons -->
         <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
         <link rel="alternate icon" href="/assets/favicon.ico" />
+
         <!-- Page Title -->
         <title>Carl's Blog</title>
 
+        <!-- Performance hints -->
         <link rel="preload" as="image" href="/assets/images/blogBackground.jpg" fetchpriority="high">
         
+        <!-- CSS -->
         <link rel="stylesheet" href="/dist/styles.css" />
+
+        <!-- Scripts -->
         <script src="/script.js" defer></script>
+
+        <!-- Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZMV09HPPR"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-GZMV09HPPR'); // replace with your ID
+            gtag('config', 'G-GZMV09HPPR');
         </script>
     </head>
 
@@ -52,15 +65,15 @@
             background-repeat: no-repeat;
         ">
 
-        <!-- navbar and blog header components -->
+        <!-- ================= NAVBAR & BLOG HEADER ================= -->
         <div id="navbar" data-include="/components/navbar.html"></div>
         <div id="blog-header" data-include="/components/blog-header.html" data-title="…" data-subtitle="…"></div>
 
-        <!-- Main Content -->
+        <!-- ================= MAIN CONTENT ================= -->
         <main class="max-w-5xl mx-auto px-6 pb-16">
             <section id="posts" class="grid gap-6 sm:grid-cols-2">
 
-                <!-- first post card -->
+                <!-- Post Card: First Blog Post -->
                 <article class="bg-white rounded-lg border border-gray-300 shadow hover:shadow-lg transition-colors p-6">
                     <h2 class="text-2xl font-semibold">
                         <a href="/blog/first-post.html" class="hover:underline">Meet Carl: A Little Background</a>
@@ -75,7 +88,7 @@
                     <a href="/blog/first-post.html" class="mt-4 inline-block text-blue-600 hover:underline">Read More →</a>
                 </article>
 
-                <!-- CS-340 Final Card -->
+                <!-- Post Card: CS-340 Project -->
                 <article class="bg-white rounded-lg border border-gray-300 shadow hover:shadow-lg transition-colors p-6">
                     <h2 class="text-2xl font-semibold">
                         <a href="/blog/cs340-project-two.html" class="hover:underline">CS-340 Project Two: Rescue-Dog Dashboard</a>
@@ -90,7 +103,7 @@
                     </a>
                 </article>
 
-                    <!-- Dogs vs Laptop Blog Card -->
+                    <!-- Post Card: Dogs vs Laptop -->
                 <article class="bg-white rounded-lg border border-gray-300 shadow hover:shadow-lg transition-colors p-6">
                     <h2 class="text-2xl font-semibold">
                         <a href="/blog/dogs-and-a-laptop.html" class="hover:underline">Why I'm Finally Building a NAS</a>
@@ -110,6 +123,7 @@
             </section>
         </main>
 
+        <!-- ================= FOOTER ================= -->
         <div id="footer" data-include="/components/footer.html"></div>
     </body>
 </html>

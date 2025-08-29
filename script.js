@@ -1,15 +1,26 @@
 /**
+ * ===========================================================
  * File: script.js
- * Purpose: Progressive enhancements for the portfolio site.
- *  - Reveal-on-scroll animations (IntersectionObserver)
- *  - Contact form submission via fetch (Formspree)
- *  - Sticky nav shadow on scroll
- *  - Smooth in-page anchor scrolling
- *  - Auto-insert current year in footer
+ * Project: Carl LaLonde — Portfolio
+ * Purpose: Progressive enhancements (safe to run on any page)
  *
- * Notes:
- *  - Animations respect the user's reduced-motion preference.
- *  - Code is resilient if certain elements/pages aren't present.
+ * Features
+ *  - Reveal-on-scroll animations (IntersectionObserver)
+ *  - Contact form (Formspree) with accessible status updates
+ *  - Sticky nav shadow on scroll
+ *  - Smooth in-page anchor scrolling (respects reduced motion)
+ *  - Auto-insert current year in footer
+ *  - Image carousel (Splide) with a11y-friendly defaults
+ *  - YouTube modal with robust URL parsing (shorts/watch/etc.)
+ *  - HTML partial loader via [data-include] + token replacement
+ *  - Optional Giscus comments auto-mount
+ *
+ * Notes
+ *  - All modules no-op if required elements are missing.
+ *  - Motion respects OS “prefers-reduced-motion”.
+ *  - Includes assume same-origin partials (recommended).
+ *  - Keep JS idempotent: handlers are delegated/bind-once.
+ * ===========================================================
  */
 
 /* ================================
@@ -26,9 +37,9 @@ const PREFERS_REDUCED_MOTION = window.matchMedia(
  * ================================ */
 
 /**
- * Apply "revealed" state:
- * - Removes initial hidden state utility classes
- * - Adds visible state utilities
+ * Apply visible state by removing initial "hidden" utilities
+ * and adding their "shown" counterparts.
+ * Tailwind expectation: elements start with `opacity-0 translate-y-6`.
  * @param {Element} el - The element to reveal
  */
 function revealNow(el) {
@@ -46,7 +57,7 @@ function revealNow(el) {
     return;
   }
 
-  // Animate once when element is ~15% visible in the viewport
+  // Reveal once when ~15% of the element is visible.
   const observer = new IntersectionObserver(
     (entries, obs) => {
       entries.forEach((entry) => {
@@ -225,7 +236,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }).mount();
 });
 
-// ===== YouTube modal for project demo (robust + fallback) =====
+/* ================================
+ *  YouTube Modal (robust parsing)
+ *  Elements required:
+ *    - #video-modal  (container with [data-close] elements inside)
+ *    - #video-iframe (iframe where src is set)
+ *    - [data-video]  (triggers with video URL or ID)
+ *    - #video-fallback (optional external link)
+ * ================================ */
 document.addEventListener("DOMContentLoaded", () => {
   const modal  = document.getElementById("video-modal");
   const iframe = document.getElementById("video-iframe");
@@ -256,7 +274,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return `https://www.youtube.com/watch?${qs.toString()}`;
   };
 
-  // Parse timestamps like ?t=30, &start=25, or #t=1m20s
+  /**
+   * Parse start time from ?t=, &start=, or hash (#1m20s).
+   * Accepts raw seconds or h/m/s notation.
+   * @param {URL} u
+   * @returns {number}
+   */
   const getStart = (u) => {
     const raw = u.searchParams.get("t") || u.searchParams.get("start") || u.hash.replace("#", "");
     if (!raw) return 0;
@@ -271,7 +294,11 @@ document.addEventListener("DOMContentLoaded", () => {
     return isNaN(n) ? 0 : n;
   };
 
-  // Return { id, start } from any input
+  /**
+   * Parse a YouTube input (ID, watch URL, share URL, shorts URL).
+   * @param {string} input
+   * @returns {{id:string,start:number}|null}
+   */
   const parseVideo = (input) => {
     try {
       if (/^[\w-]{10,12}$/.test(input)) return { id: input, start: 0 };
@@ -294,6 +321,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  /**
+   * Open the modal and start playback.
+   * Accepts either a raw video ID or any YouTube URL.
+   * @param {string} videoInput
+   */
   const open = (videoInput) => {
     const parsed = parseVideo(videoInput);
     // If we couldn't parse, just try to show whatever we got and set the fallback link
@@ -311,6 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.querySelector("[data-close]")?.focus();
   };
 
+  /** Close modal and stop playback. */
   const close = () => {
     iframe.src = ""; // stop playback
     modal.classList.add("hidden");
@@ -333,43 +366,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 }); 
 
-// //Load components
-// function loadComponent(targetId, url, after) {
-//   const mount = document.getElementById(targetId);
-//   if (!mount) return;
-//   fetch(url).then(r => r.text()).then(html => {
-//     mount.innerHTML = html;
-//     if (after) after(mount);
-//   });
-// }
 
-// document.addEventListener("DOMContentLoaded", () => {
-//   loadComponent("navbar", "/components/navbar.html");
-//   loadComponent("footer", "/components/footer.html", (root) => {
-//     const y = root.querySelector("#year");
-//     if (y) y.textContent = new Date().getFullYear();
-//   });
-// });
+/* ================================
+ *  Giscus (GitHub Discussions) Mount
+ *  Usage: Place <div id="giscus_thread" data-...> on pages with comments.
+ * ================================ */
 
-// BLOG HEADER (optional on pages)
-// (() => {
-//   const host = document.getElementById('blog-header');
-//   if (!host) return;
-
-//   fetch('/components/blog-header.html')
-//     .then(r => r.text())
-//     .then(tpl => {
-//       const title = host.dataset.title || 'Projects, Pivots & Pawprints';
-//       const subtitle = host.dataset.subtitle || 'Notes on projects, learning, and dogs.';
-//       host.innerHTML = tpl
-//         .replaceAll('{{title}}', title)
-//         .replaceAll('{{subtitle}}', subtitle);
-//     })
-//     .catch(console.error);
-// })();
-
-
-// After your existing code that loads [data-include] partials:
+/**
+ * Inject giscus client script once into #giscus_thread.
+ * Copies any data-* attributes from the container to the script.
+ */
 function mountGiscus() {
   const container = document.querySelector('#giscus_thread');
   if (!container || container.querySelector('iframe')) return; // already mounted
@@ -387,21 +393,10 @@ function mountGiscus() {
   container.appendChild(s);
 }
 
-  // If you use a DOMContentLoaded handler for includes, call mountGiscus() after they load.
-  //Example:
-// document.addEventListener('DOMContentLoaded', async () => {
-//   const includes = document.querySelectorAll('[data-include]');
-//   await Promise.all(Array.from(includes).map(async (el) => {
-//     const file = el.getAttribute('data-include');
-//     try { const res = await fetch(file); el.innerHTML = await res.text(); }
-//     catch (e) { console.error('Include failed:', file, e); }
-//   }));
-//   mountGiscus();
-// });
-
-
 /* ================================
- *  Unified include loader (ONLY ONE)
+ *  Unified Include Loader
+ *  Loads partials into any element with [data-include="..."].
+ *  Emits: `includes:ready` on document when complete.
  * ================================ */
 document.addEventListener("DOMContentLoaded", async () => {
   const nodes = document.querySelectorAll("[data-include]");
@@ -440,16 +435,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }));
 
-  // mount giscus after all includes (if present on this page)
+  // Mount giscus if the container exists on this page.
   if (typeof mountGiscus === "function") mountGiscus();
 
-  // ✅ Tell other code that includes are ready
+  // Notify any listeners that includes are ready.
   document.dispatchEvent(new Event("includes:ready"))
 });
 
 
 
-// === Mobile nav: delegated, bind-once, Chrome/iOS friendly ===
+/* ================================
+ *  Mobile Nav (delegated, bind-once)
+ *  Elements expected in included navbar:
+ *    - #navToggle (button with aria-expanded)
+ *    - #mobileMenu (menu panel)
+ *    - #navBackdrop (optional backdrop)
+ * ================================ */
 (function () {
   if (window.__navBound) return;
   window.__navBound = true;
@@ -462,6 +463,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
   }
 
+  /** Open the mobile menu (updates aria & page scroll lock). */
   function openMenu() {
     const { btn, menu, backdrop } = getEls();
     if (!btn || !menu) return;
@@ -471,6 +473,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.documentElement.classList.add('overflow-hidden');
   }
 
+  /** Close the mobile menu (updates aria & page scroll lock). */
   function closeMenu() {
     const { btn, menu, backdrop } = getEls();
     if (!btn || !menu) return;
