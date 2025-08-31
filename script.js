@@ -73,81 +73,174 @@ function revealNow(el) {
   revealEls.forEach((el) => observer.observe(el));
 })();
 
-/* ================================
- *  Contact Form Handling (Formspree)
- * ================================ */
+// /* ================================
+//  *  Contact Form Handling (Formspree)
+//  * ================================ */
 
+// document.addEventListener("DOMContentLoaded", () => {
+//   /** @type {HTMLFormElement|null} */
+//   const form = document.getElementById("contact-form");
+//   if (!form) return; // Skip if current page has no form
+
+//   /** @type {HTMLElement|null} */
+//   const status = document.getElementById("form-status");
+//   /** @type {HTMLButtonElement|null} */
+//   const submitBtn = form.querySelector('button[type="submit"]');
+
+//   // Make status area accessible if present
+//   if (status && !status.hasAttribute("aria-live")) {
+//     status.setAttribute("aria-live", "polite");
+//   }
+
+//   form.addEventListener("submit", async (e) => {
+//     e.preventDefault();
+
+//     if (!submitBtn) return;
+
+//     // UI: disable button while sending
+//     const originalText = submitBtn.textContent;
+//     submitBtn.disabled = true;
+//     submitBtn.textContent = "Sending...";
+
+//     try {
+//       const formData = new FormData(form);
+//       const resp = await fetch(form.action, {
+//         method: form.method,
+//         body: formData,
+//         headers: { Accept: "application/json" },
+//       });
+
+//       if (resp.ok) {
+//         // Success: show message + clear fields
+//         if (status) {
+//           status.textContent = "✅ Thanks! Your message was sent.";
+//           status.classList.remove("hidden");
+//           status.classList.remove("opacity-0"); // ensure visible if previously faded
+//         }
+//         form.reset();
+
+//         // Auto-hide after 5 seconds with a fade
+//         if (status) {
+//           setTimeout(() => {
+//             status.classList.add("opacity-0");
+//             setTimeout(() => status.classList.add("hidden"), 500);
+//           }, 5000);
+//         }
+//       } else {
+//         if (status) {
+//           status.textContent =
+//             "❌ Sorry—something went wrong. Please try again.";
+//           status.classList.remove("hidden");
+//           status.classList.remove("opacity-0");
+//         }
+//       }
+//     } catch (err) {
+//       if (status) {
+//         status.textContent =
+//           "❌ Network error. Check your connection and try again.";
+//         status.classList.remove("hidden");
+//         status.classList.remove("opacity-0");
+//       }
+//     } finally {
+//       // Restore button
+//       submitBtn.disabled = false;
+//       submitBtn.textContent = originalText;
+//     }
+//   });
+// });
+
+/* ================================
+ *  Contact Form -> Spring Boot API
+ * ================================ */
 document.addEventListener("DOMContentLoaded", () => {
   /** @type {HTMLFormElement|null} */
   const form = document.getElementById("contact-form");
-  if (!form) return; // Skip if current page has no form
+  if (!form) return;
 
-  /** @type {HTMLElement|null} */
   const status = document.getElementById("form-status");
-  /** @type {HTMLButtonElement|null} */
   const submitBtn = form.querySelector('button[type="submit"]');
 
-  // Make status area accessible if present
-  if (status && !status.hasAttribute("aria-live")) {
-    status.setAttribute("aria-live", "polite");
+  // where to send requests
+  const host = location.hostname || "";
+  const IS_LOCAL = host === "localhost" || host === "127.0.0.1";
+  const API_BASE = IS_LOCAL
+    ? "http://127.0.0.1:8080"
+    : "https://portfolio-contact-753288759454.us-central1.run.app";
+
+  function showStatus(msg, ok = true) {
+    if (!status) return;
+    status.textContent = msg;
+    status.classList.remove("hidden");
+    status.classList.toggle("text-green-600", ok);
+    status.classList.toggle("text-red-600", !ok);
+    status.classList.remove("opacity-0");
+    // auto-hide success after 5s
+    if (ok) {
+      setTimeout(() => {
+        status.classList.add("opacity-0");
+        setTimeout(() => status.classList.add("hidden"), 500);
+      }, 5000);
+    }
   }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     if (!submitBtn) return;
 
-    // UI: disable button while sending
+    // honeypot: if filled, silently succeed
+    const hp = /** @type {HTMLInputElement|null} */(form.querySelector("#website"));
+    if (hp && hp.value.trim()) {
+      showStatus("✅ Thanks! Your message was sent.", true);
+      form.reset();
+      return;
+    }
+
+    const payload = {
+      name: form.name?.value.trim(),
+      email: form.email?.value.trim(),
+      subject: form.subject?.value.trim(),
+      message: form.message?.value.trim(),
+    };
+
+    // simple client-side validation
+    if (!payload.name || !payload.email || !payload.subject || !payload.message) {
+      showStatus("❌ Please fill in all fields.", false);
+      return;
+    }
+
+    // UI disable
     const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = "Sending...";
 
     try {
-      const formData = new FormData(form);
-      const resp = await fetch(form.action, {
-        method: form.method,
-        body: formData,
-        headers: { Accept: "application/json" },
+      const ctrl = new AbortController();
+      const to = setTimeout(() => ctrl.abort(), 15000);
+
+      const res = await fetch(`${API_BASE}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal: ctrl.signal,
       });
+      clearTimeout(to);
 
-      if (resp.ok) {
-        // Success: show message + clear fields
-        if (status) {
-          status.textContent = "✅ Thanks! Your message was sent.";
-          status.classList.remove("hidden");
-          status.classList.remove("opacity-0"); // ensure visible if previously faded
-        }
+      if (res.ok) {
+        showStatus("✅ Thanks! Your message was sent.", true);
         form.reset();
-
-        // Auto-hide after 5 seconds with a fade
-        if (status) {
-          setTimeout(() => {
-            status.classList.add("opacity-0");
-            setTimeout(() => status.classList.add("hidden"), 500);
-          }, 5000);
-        }
       } else {
-        if (status) {
-          status.textContent =
-            "❌ Sorry—something went wrong. Please try again.";
-          status.classList.remove("hidden");
-          status.classList.remove("opacity-0");
-        }
+        const text = await res.text().catch(() => "");
+        showStatus("❌ Sorry—something went wrong. Please try again." + (text ? ` (${text})` : ""), false);
       }
-    } catch (err) {
-      if (status) {
-        status.textContent =
-          "❌ Network error. Check your connection and try again.";
-        status.classList.remove("hidden");
-        status.classList.remove("opacity-0");
-      }
+    } catch {
+      showStatus("❌ Network error. Please try again.", false);
     } finally {
-      // Restore button
       submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
+      submitBtn.textContent = originalText || "Send";
     }
   });
 });
+
 
 /* ================================
  *  Sticky Nav Shadow on Scroll
