@@ -1,0 +1,185 @@
+<!-- 
+  ===========================================================
+  File: portfolio-website-project.html
+  Title: A Journey Through HTML & CSS
+  Purpose: Individual article page with accessible, readable typography
+  Tech Stack: Tailwind CSS via CDN (consider Typography plugin for .prose)
+  Accessibility: Semantic landmarks (<article>), descriptive links, <time>, figure/figcaption
+  Author: Carl LaLonde
+  Last Updated: 2025-08-31
+  ===========================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+        <!-- Page Title & Metadata -->
+        <title>A Journey Through HTML & CSS</title>
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="Shipping My Portfolio: Lessons in Design, Data, and Deployment">
+        <meta property="og:description" content="Lessons learned shipping my portfolio: clarity over flash, data over guesswork, conversations over silence, and progress over perfection.">
+        <meta property="og:url" content="https://carllalonde.com/blog/portfolio-website-project.html">
+        <link rel="canonical" href="https://carllalonde.com/blog/portfolio-website-project.html">
+
+        <!-- Social Sharing --> 
+        <meta property="og:image" content="https://carllalonde.com/assets/og/clMetaImage.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Screenshot/hero for 'A Journey Through HTML & CSS'" />
+        <meta property="og:site_name" content="Carl’s Blog" />
+
+        <!-- Preload background for faster first paint -->
+        <link rel="preload" as="image" href="/assets/images/blogBackground.jpg" fetchpriority="high">
+
+        <!-- CSS & JS -->
+        <link rel="stylesheet" href="/dist/styles.css" />
+        <script src="/script.js" defer></script>
+
+        <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZMV09HPPR"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-GZMV09HPPR'); 
+        </script>
+    </head>
+
+    <body class="bg-gray-50 text-gray-800"
+        style="
+            background-image:
+            linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)),
+            url('/assets/images/blogBackground.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        ">
+
+        <!-- ================= NAVBAR & BLOG HEADER ================= -->
+        <div id="navbar" data-include="/components/navbar.html"></div>
+        <div id="blog-header" data-include="/components/blog-header.html" data-title="…" data-subtitle="…"></div>
+
+        <!-- ================= ARTICLE ================= -->
+        <article class="max-w-3xl mx-auto px-6 py-10 prose prose-neutral">
+            <header class="pt-8 pb-6">
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-center">Shipping My Portfolio: Lessons in Design, Data, and Deployment</h1>
+                <p class="mt-3 text-sm text-gray-500 text-center md:text-left">
+                    <time datetime="2025-08-22">Aug 2025</time> • 6-8 min read
+                </p>
+
+            </header>
+            <br>
+
+            <p>
+                When I started this portfolio website, I swore I’d keep everything clean, modular, and elegant. 
+                Then I actually built it. The file and project structure ended up looking like it was organized 
+                by a raccoon who just discovered Tailwind—folders within folders, a few “final-final-3” filenames, 
+                and components I definitely meant to refactor. But here’s the twist: I’m still proud of it. Underneath 
+                the mess, this little project taught me a lot about design, data, conversation, and—most importantly—shipping 
+                something real to the web.
+            </p>
+            <br>
+
+            <p>
+                The first big lesson was that visual polish isn’t a luxury; it’s table stakes for keeping people on the page. 
+                I focused on simple, repeatable patterns that make a site feel intentional: clear heading hierarchy so your 
+                eyes always know where to land, consistent spacing so nothing looks crammed or lonely, and readable line lengths 
+                so paragraphs don’t feel like marathons. I added small hover states and gentle shadows to give the interface a 
+                bit of life without turning it into a carnival ride. Most of all, I tried to keep actions obvious: functional 
+                buttons, links that actually look like links, and focus states that make keyboard navigation pleasant. Accessibility 
+                wasn’t something I sprinkled on at the end, either; alt text, labels, and color contrast made it in early. 
+                Clarity beats fancy every time.
+            </p>
+            <br>
+
+            <figure class="mt-6 mb-8">
+                <img src="/assets/images/Portfolio-blog-post-pics/GA4_Dashboard.jpg"
+                    alt="Google Analytics Dashboard showing site visitors"
+                    class="rounded-x1 shadow-lg w-full max-w-3xl mx-auto">
+                <figcaption class="mt-2 text-sm text-slate-500 text-center">
+                    My first traffic spike in GA4 - proof that people were actually visiting.
+                </figcaption>
+            </figure>
+            <p>
+                Because I wanted to build for real people, I wired up Google Analytics. I’m using GA4 to see which pages people 
+                visit, how long they stick around, and which links they actually click. I even added a couple of custom events—like 
+                tracking resume downloads—so I can tell whether visitors are kicking the tires or really interested. I’m not collecting 
+                anything creepy; it’s just enough data to stop me from guessing. Honestly, one of the most exciting moments was 
+                seeing those first visits show up in the dashboard—it made the site feel alive in a way code alone never could. 
+                Seeing real numbers has already changed how I prioritize work
+            </p>
+            <br>
+
+            <p>
+                Opening the door to conversation was another milestone. I added Giscus for comments, which hooks into GitHub 
+                Discussions under the hood. It’s a neat setup: threaded conversations, reactions, and spam protection with 
+                almost no maintenance. The trick was mapping each page to a unique discussion based on its pathname, and once 
+                I did that, it just worked. The only catch is that you need a GitHub account to comment, which is fine for most 
+                devs but not ideal for everyone. To make sure no one felt shut out, I included alternate ways to reach me—because 
+                a conversation isn’t a conversation if only half the room can talk.
+            </p>
+            <br>
+
+            <p>
+                Then came the part that makes a project feel “real”: getting it online with a custom domain. 
+                I deployed with GitHub Pages and pointed my domain at the repo. That meant flipping the right 
+                switch in the repo settings, adding the recommended DNS records with my registrar, and dropping 
+                a CNAME file in the project so the domain sticks during redeploys. DNS propagation has a sense 
+                of humor and takes its sweet time, but once it clicked, seeing my own URL load something I built 
+                was ridiculously satisfying. It’s a small thing that makes a big difference in how professional the site feels.
+            </p>
+            <br>
+
+            <p>
+                Now, about that messy structure. I’m not going to pretend it’s ideal, but shipping first taught me what 
+                actually needs cleaning. I can already see the wins I’ll get from pulling repeated UI into reusable components, 
+                tidying assets into a sane set of folders, and moving blog content into Markdown so writing doesn’t involve 
+                spelunking through HTML. I’ll keep trimming image sizes, tuning meta tags, and smoothing performance. The 
+                difference this time is that I’m refactoring with purpose instead of chasing abstract neatness. It turns out 
+                “done” is a fantastic teacher.
+            </p>
+            <br>
+            
+            <p>
+                If I could time-travel a few weeks and give myself advice, I’d say: begin with the essentials and expand gradually; 
+                choose a simple design system early and stick to it; add analytics once you have content live and let the data guide 
+                you; keep comments lightweight and friendly to encourage community; and spring for the custom domain because it’s 
+                the cheapest, fastest way to level up your site’s presence. Most importantly, don’t wait for perfect. Ship, learn, 
+                then polish.
+            </p>
+
+            <br>
+
+            <p>
+                I’m still improving this portfolio, but I’m already grateful for the lessons it taught me: clarity over flash, 
+                data over guesswork, conversations over silence, and progress over perfection. If you have tips for tidying 
+                structure without losing momentum, clever analytics events I should track, or a Giscus trick I haven’t discovered 
+                yet, I’d love to hear them. And if you notice a stray “final-final-2.png” lurking in the repo… let’s agree to 
+                pretend it’s a performance art piece.
+            </p>
+            <br>
+
+            <br>
+
+            <footer class="mt-10 text-sm text-slate-500">
+                 Written by <span class="font-medium">Carl LaLonde</span>
+            </footer>
+            <br>
+            <p class="max-w-3xl mx-auto px-6 mt-12">
+                <a href="/blog/index.html" class="text-blue-600 hover:underline"><strong>← Back to blog</strong></a>
+            </p>
+            
+        </article>
+
+        <!-- ================= COMMENTS ================= -->
+        <div data-include="/components/comments.html"></div>
+
+        <!-- ================= FOOTER ================= -->
+        <div id="footer" data-include="/components/footer.html"></div>
+    </body>
+
+</html>
