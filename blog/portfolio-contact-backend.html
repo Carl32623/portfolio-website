@@ -1,0 +1,232 @@
+<!-- 
+  File: blog/portfolio-contact-backend.html
+  Title: From Formspree to Cloud Run
+  Purpose: Blog post about building and deploying a Spring Boot backend on Cloud Run
+  Author: Carl LaLonde
+  Date: 09/01/2025
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="From Formspree to Cloud Run: Building My Portfolio Contact Backend" />
+        <meta property="og:description" content="How I replaced Formspree with my own Spring Boot backend deployed on Google Cloud Run." />
+        <meta property="og:url" content="https://carllalonde.com/blog/portfolio-contact-backend.html" />
+        <meta property="og:image" content="https://carllalonde.com/assets/images/Portfolio-blog-post-pics/formspree_to_backend_spring_boot_contact.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Cartoonish Spring Boot leaf, Google Cloud badge, and envelope connected by an arrow" />
+        <meta property="og:site_name" content="Carl’s Blog" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@Carl32623" />
+        <meta name="twitter:creator" content="@Carl32623" />
+        <meta name="twitter:title" content="From Formspree to Cloud Run: Building My Portfolio Contact Backend" />
+        <meta name="twitter:description" content="How I replaced Formspree with my own Spring Boot backend deployed on Google Cloud Run." />
+        <meta name="twitter:image" content="https://carllalonde.com/assets/images/Portfolio-blog-post-pics/formspree_to_backend_spring_boot_contact.jpg" />
+        <meta name="twitter:image:alt" content="Cartoonish Spring Boot leaf, Google Cloud badge, and envelope connected by an arrow" />
+
+
+        <link rel="canonical" href="https://carllalonde.com/blog/portfolio-contact-backend.html">
+
+        <!-- Preload background for faster first paint -->
+        <link rel="preload" as="image" href="/assets/images/blogBackground.jpg" fetchpriority="high">
+
+        <!-- CSS & JS -->
+        <link rel="stylesheet" href="/dist/styles.css" />
+        <script src="/script.js" defer></script>
+
+        <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZMV09HPPR"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-GZMV09HPPR'); 
+        </script>
+    </head>
+
+    <body class="bg-gray-50 text-gray-800"
+        style="
+            background-image:
+            linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)),
+            url('/assets/images/blogBackground.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        ">
+
+        <!-- ================= NAVBAR & BLOG HEADER ================= -->
+        <div id="navbar" data-include="/components/navbar.html"></div>
+        <div id="blog-header" data-include="/components/blog-header.html" data-title="…" data-subtitle="…"></div>
+
+        <!-- ================= ARTICLE ================= -->
+        <article class="max-w-3xl mx-auto px-6 py-10 prose prose-neutral">
+            <header class="pt-8 pb-6">
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-center">From Formspree to Cloud Run: Building My Portfolio Contact Backend (and Living to Tell the Tale)</h1>
+                <p class="mt-3 text-sm text-gray-500 text-center md:text-left">
+                    <time datetime="2025-09-01">Sept 2025</time> • 8-10 min read
+                </p>
+
+            </header>
+            <br>
+            
+            <p>
+                When I first launched my portfolio website, I wanted a quick way for people to reach me. Like many developers, 
+                I turned to Formspree. It worked fine: type your message, hit submit, and boom — I’d get an email. But “fine” 
+                wasn’t enough for me anymore. I wanted to build something myself, something that would give me hands-on experience 
+                with Spring Boot and push me into the uncharted waters of deploying on Google Cloud Run. That’s how this project 
+                started — as a simple replacement for Formspree — and it quickly spiraled into a crash course in backend development, 
+                cloud deployment, and patience.
+            </p>
+            <br>
+
+            <p>
+                The backend itself was simple in concept. I built a <strong>REST</strong> endpoint called <em>/api/contact</em> to 
+                accept form submissions and created a <em>ContactRequest</em> object with validation annotations like <em>@NotBlank</em> 
+                and <em>@Email</em>. This way, I could be sure I wasn’t just receiving blank strings or nonsense in the email field. 
+                The service class, <em>EmailService</em>, was wired up to <em>JavaMailSender</em> and set to send me an 
+                <strong>HTML-formatted</strong> email with the user’s information. In theory, it was neat and tidy. In practice, 
+                nothing about getting it into production was neat or tidy.
+            </p>
+            <br>
+
+            <p>
+                My first hurdle was simply understanding why my form only seemed to work when I was running the backend on 
+                localhost. I wasn’t yet thinking like someone deploying to the cloud, so it took a while to realize the obvious: 
+                my code was running fine locally because it had direct access to everything it needed, but once deployed to 
+                <strong>Cloud Run</strong>, the environment had to be explicitly configured. That led me into my first real 
+                challenge: environment variables. At first, none of my values for <em>spring.mail.username</em>, 
+                <em>spring.mail.password</em>, <em>contact.to</em>, or <em>contact.prefix</em> were being picked up, which left 
+                my backend happily running but completely incapable of sending an email. It felt like the equivalent of having a 
+                car that starts perfectly but has no wheels attached. Learning how to inject those variables through 
+                <strong>Cloud Run</strong> — and how to pull sensitive values like the password from 
+                <strong>Google Secret Manager</strong> — was a turning point. Suddenly, the engine wasn’t just running, it had a 
+                road beneath it.
+            </p>
+            <br>
+
+            <p>
+                Just when I thought I was in the clear, deployment itself decided to throw me off track. My first attempts at 
+                redeploying the service with
+            </p>
+                <pre>
+                    <code>
+                        gcloud builds submit --pack
+                        image=us-central1-docker.pkg.dev/portfolio-contact-470712/apps/portfolio-contact
+                    </code>
+                </pre>
+            <p>
+                ended in failure because the <strong>Artifact Registry</strong> repository I was pushing to didn’t exist yet. 
+                The build would succeed, the image would compile, and then <strong>Google Cloud</strong> would shrug and tell me: 
+            </p>
+                <pre>
+                    <code>
+                        name unknown: Repository "apps" not found.
+                        ERROR: failed to push because we ran out of retries.
+                    </code>
+                </pre>
+            <p>
+                It was like baking a cake only to discover the oven was imaginary. The solution was either to create the repository 
+                myself or switch to deploying with <em>--source .</em>, which let <strong>Cloud Run</strong> handle the heavy lifting. 
+                It sounds obvious now, but at the time it was another frustrating detour. 
+            </p>
+            <br>
+
+            <p>
+                And then there were the <strong>Docker</strong> warnings. Every time I authenticated with 
+                <em>gcloud auth configure-docker</em>, I’d get a warning that <strong>Docker</strong> wasn’t in my <em>PATH</em>. 
+                Since I was using <strong>Cloud Buildpacks</strong>, I didn’t actually need <strong>Docker</strong> installed 
+                locally — Google was doing all the container work for me — but that didn’t stop the warnings from making me 
+                second-guess everything. The project was full of these little moments where I wondered if I was truly stuck or 
+                if the system was just messing with me. Spoiler: it was usually the latter.
+            </p>
+            <br>
+
+            <p>
+                Eventually, I got through those early roadblocks, and that’s when the most memorable bug of the whole project 
+                appeared. Everything was deploying, the environment variables were loading correctly, and the service looked 
+                like it was finally ready for the big leagues. Then came the <strong>500 Internal Server Errors</strong>.  I 
+                tried to submit a contact form, to test the outcome, and the logs filled with stack traces pointing deep into 
+                <strong>Tomcat</strong> and my <em>ContactController.submit()</em> method.
+            </p>
+            <br>
+
+            <p>
+                I was convinced I had broken something fundamental in my code. Hours of log-diving later, I realized the problem 
+                wasn’t my service at all — it was bad data. I was entering a bogus email address like <em>struggles@wtf.com</em>, 
+                which technically looked like an email but couldn’t pass AOL’s SMTP server without throwing a fit. My backend wasn’t 
+                catching the issue, so the whole request exploded into an error.
+            </p>
+            <br>
+
+            <p>
+                I ended up adding a stricter <strong>fail-fast regex</strong> check in the controller. Now if the email didn’t match, 
+                the backend would stop the request cold and return a friendly response instead of falling over. The relevant snippet 
+                looked like this:
+            </p>
+                <pre>
+                    <code>
+                        if (req.getEmail() == null || !req.getEmail().matches(EMAIL_REGEX)) {
+                            return ResponseEntity.badRequest().body(Map.of(
+                                "code", "invalid_email",
+                                "message", "Invalid email address. Please verify your email."
+                            ));
+                        }
+                    </code>
+                </pre>
+            <p>
+                Instead of taking down the whole service, the endpoint now politely told the user their email wasn’t valid. 
+                It was one of those small changes that made a huge difference, and it taught me the value of defensive programming.
+            </p>
+            <br>
+
+            <p>
+                Looking back, this project started as a replacement for <strong>Formspree</strong>, but it ended up teaching me so 
+                much more. I learned how to build and validate APIs with <strong>Spring Boot</strong>, how to handle email with 
+                <strong>JavaMailSender</strong>, how to manage secrets securely with <strong>Google Secret Manager</strong>, and 
+                how to deploy real applications on <strong>Google Cloud Run</strong>. I learned how to debug production logs with 
+                the <strong>gcloud CLI</strong>, how to wrestle with <strong>GitHub branches</strong> without losing my mind, and 
+                how to keep moving forward even when the same command seemed to break in a new way every time I ran it. Most 
+                importantly, I learned that backend development isn’t just about writing code — it’s about adapting, troubleshooting, 
+                and laughing at your own mistakes along the way.
+            </p>
+            <br>
+
+            <p>
+                Now, my portfolio’s contact form doesn’t just look good on the frontend. Behind the scenes, it’s powered by a service 
+                I designed, built, and deployed myself. Every email that lands in my inbox will be a reminder of the work that went 
+                into it. And yes, I even made a logo in <strong>GIMP</strong> with the <strong>Spring Boot leaf</strong>, 
+                a <strong>Google Cloud badge</strong>, and an <strong>envelope</strong>, because if you survive a project like this, 
+                you deserve a little branding. What started with Formspree turned into a full-fledged learning journey, and while 
+                there were plenty of struggles along the way, I wouldn’t trade them. They’re what made the project not just functional, 
+                but meaningful.
+            </p>
+            <br>
+            <br>
+
+            <footer class="mt-10 text-sm text-slate-500">
+                 Written by <span class="font-medium">Carl LaLonde</span>
+            </footer>
+            <br>
+            <p class="max-w-3xl mx-auto px-6 mt-12">
+                <a href="/blog/index.html" class="text-blue-600 hover:underline"><strong>← Back to blog</strong></a>
+            </p>
+            
+        </article>
+
+        <!-- ================= COMMENTS ================= -->
+        <div data-include="/components/comments.html"></div>
+
+        <!-- ================= FOOTER ================= -->
+        <div id="footer" data-include="/components/footer.html"></div>
+    </body>
+</html>
+
