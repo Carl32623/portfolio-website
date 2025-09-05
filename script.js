@@ -73,208 +73,208 @@ function revealNow(el) {
   revealEls.forEach((el) => observer.observe(el));
 })();
 
-// /* ================================
-//  *  Contact Form Handling (Formspree)
-//  * ================================ */
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   /** @type {HTMLFormElement|null} */
-//   const form = document.getElementById("contact-form");
-//   if (!form) return; // Skip if current page has no form
-
-//   /** @type {HTMLElement|null} */
-//   const status = document.getElementById("form-status");
-//   /** @type {HTMLButtonElement|null} */
-//   const submitBtn = form.querySelector('button[type="submit"]');
-
-//   // Make status area accessible if present
-//   if (status && !status.hasAttribute("aria-live")) {
-//     status.setAttribute("aria-live", "polite");
-//   }
-
-//   form.addEventListener("submit", async (e) => {
-//     e.preventDefault();
-
-//     if (!submitBtn) return;
-
-//     // UI: disable button while sending
-//     const originalText = submitBtn.textContent;
-//     submitBtn.disabled = true;
-//     submitBtn.textContent = "Sending...";
-
-//     try {
-//       const formData = new FormData(form);
-//       const resp = await fetch(form.action, {
-//         method: form.method,
-//         body: formData,
-//         headers: { Accept: "application/json" },
-//       });
-
-//       if (resp.ok) {
-//         // Success: show message + clear fields
-//         if (status) {
-//           status.textContent = "✅ Thanks! Your message was sent.";
-//           status.classList.remove("hidden");
-//           status.classList.remove("opacity-0"); // ensure visible if previously faded
-//         }
-//         form.reset();
-
-//         // Auto-hide after 5 seconds with a fade
-//         if (status) {
-//           setTimeout(() => {
-//             status.classList.add("opacity-0");
-//             setTimeout(() => status.classList.add("hidden"), 500);
-//           }, 5000);
-//         }
-//       } else {
-//         if (status) {
-//           status.textContent =
-//             "❌ Sorry—something went wrong. Please try again.";
-//           status.classList.remove("hidden");
-//           status.classList.remove("opacity-0");
-//         }
-//       }
-//     } catch (err) {
-//       if (status) {
-//         status.textContent =
-//           "❌ Network error. Check your connection and try again.";
-//         status.classList.remove("hidden");
-//         status.classList.remove("opacity-0");
-//       }
-//     } finally {
-//       // Restore button
-//       submitBtn.disabled = false;
-//       submitBtn.textContent = originalText;
-//     }
-//   });
-// });
-
 /* ================================
- * Contact Form → Spring Boot API
+ *  Contact Form Handling (Formspree)
  * ================================ */
+
 document.addEventListener("DOMContentLoaded", () => {
   /** @type {HTMLFormElement|null} */
   const form = document.getElementById("contact-form");
-  if (!form) return;
+  if (!form) return; // Skip if current page has no form
 
-  const statusEl = document.getElementById("form-status");
+  /** @type {HTMLElement|null} */
+  const status = document.getElementById("form-status");
+  /** @type {HTMLButtonElement|null} */
   const submitBtn = form.querySelector('button[type="submit"]');
 
-  // Use your Cloud Run URL in production, localhost for dev
-  const IS_LOCAL = ["localhost", "127.0.0.1"].includes(location.hostname);
-  const API_BASE = IS_LOCAL
-    ? "http://127.0.0.1:8080"
-    : "https://portfolio-contact-753288759454.us-central1.run.app";
-
-  let busy = false;
-
-  function showStatus(msg, ok = true) {
-    if (!statusEl) return;
-    statusEl.textContent = msg;
-    statusEl.classList.remove("hidden", "opacity-0");
-    statusEl.classList.toggle("text-green-600", ok);
-    statusEl.classList.toggle("text-red-600", !ok);
-    if (ok) {
-      setTimeout(() => {
-        statusEl.classList.add("opacity-0");
-        setTimeout(() => statusEl.classList.add("hidden"), 500);
-      }, 5000);
-    }
+  // Make status area accessible if present
+  if (status && !status.hasAttribute("aria-live")) {
+    status.setAttribute("aria-live", "polite");
   }
-
-  const EMAIL_RX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // simple client check
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    if (busy || !submitBtn) return; // prevent double-clicks
 
-    // honeypot: if filled, pretend success
-    const hp = /** @type {HTMLInputElement|null} */(form.querySelector("#website"));
-    if (hp && hp.value.trim()) {
-      showStatus("✅ Thanks! Your message was sent.", true);
-      form.reset();
-      return;
-    }
+    if (!submitBtn) return;
 
-    const payload = {
-      name: form.name?.value.trim(),
-      email: form.email?.value.trim(),
-      subject: form.subject?.value.trim(),
-      message: form.message?.value.trim(),
-    };
-
-    if (!payload.name || !payload.email || !payload.subject || !payload.message) {
-      showStatus("❌ Please fill in all fields.", false);
-      return;
-    }
-    if (!EMAIL_RX.test(payload.email)) {
-      showStatus("❌ Please enter a valid email address.", false);
-      return;
-    }
-
-    // UI lock
-    busy = true;
+    // UI: disable button while sending
     const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
-    submitBtn.textContent = "Sending…";
+    submitBtn.textContent = "Sending...";
 
     try {
-      const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 15000);
-
-      const res = await fetch(`${API_BASE}/api/contact`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify(payload),
-        signal: ctrl.signal,
+      const formData = new FormData(form);
+      const resp = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { Accept: "application/json" },
       });
 
-      clearTimeout(t);
-
-      if (res.ok) {
-        showStatus("✅ Thanks! Your message was sent.", true);
-        form.reset();
-        return;
-      }
-
-      // try to read JSON error from your Spring handlers
-      let detail = "";
-      try {
-        const data = await res.json();
-        // Map your server codes to friendly messages
-        if (data?.code === "invalid_email") {
-          detail = "Invalid email. Please double-check it.";
-        } else if (data?.code === "validation_failed") {
-          detail = "Please correct the highlighted fields.";
-        } else if (data?.code === "smtp_error" || data?.code === "smtp_unavailable" || data?.code === "smtp_auth_failed") {
-          detail = "Email service temporarily unavailable. Please try again later.";
-        } else if (data?.message) {
-          detail = data.message;
+      if (resp.ok) {
+        // Success: show message + clear fields
+        if (status) {
+          status.textContent = "✅ Thanks! Your message was sent.";
+          status.classList.remove("hidden");
+          status.classList.remove("opacity-0"); // ensure visible if previously faded
         }
-      } catch {
-        // fallback to text
-        const txt = await res.text().catch(() => "");
-        if (txt) detail = txt.slice(0, 200);
-      }
+        form.reset();
 
-      showStatus(`❌ Sorry—something went wrong.${detail ? " " + detail : ""}`, false);
-    } catch (err) {
-      if (err && (err.name === "AbortError")) {
-        showStatus("❌ Request timed out. Please try again.", false);
+        // Auto-hide after 5 seconds with a fade
+        if (status) {
+          setTimeout(() => {
+            status.classList.add("opacity-0");
+            setTimeout(() => status.classList.add("hidden"), 500);
+          }, 5000);
+        }
       } else {
-        showStatus("❌ Network error. Please try again.", false);
+        if (status) {
+          status.textContent =
+            "❌ Sorry—something went wrong. Please try again.";
+          status.classList.remove("hidden");
+          status.classList.remove("opacity-0");
+        }
+      }
+    } catch (err) {
+      if (status) {
+        status.textContent =
+          "❌ Network error. Check your connection and try again.";
+        status.classList.remove("hidden");
+        status.classList.remove("opacity-0");
       }
     } finally {
-      busy = false;
+      // Restore button
       submitBtn.disabled = false;
-      submitBtn.textContent = originalText || "Send Message";
+      submitBtn.textContent = originalText;
     }
   });
 });
+
+// /* ================================
+//  * Contact Form → Spring Boot API
+//  * ================================ */
+// document.addEventListener("DOMContentLoaded", () => {
+//   /** @type {HTMLFormElement|null} */
+//   const form = document.getElementById("contact-form");
+//   if (!form) return;
+
+//   const statusEl = document.getElementById("form-status");
+//   const submitBtn = form.querySelector('button[type="submit"]');
+
+//   // Use your Cloud Run URL in production, localhost for dev
+//   const IS_LOCAL = ["localhost", "127.0.0.1"].includes(location.hostname);
+//   const API_BASE = IS_LOCAL
+//     ? "http://127.0.0.1:8080"
+//     : "https://portfolio-contact-753288759454.us-central1.run.app";
+
+//   let busy = false;
+
+//   function showStatus(msg, ok = true) {
+//     if (!statusEl) return;
+//     statusEl.textContent = msg;
+//     statusEl.classList.remove("hidden", "opacity-0");
+//     statusEl.classList.toggle("text-green-600", ok);
+//     statusEl.classList.toggle("text-red-600", !ok);
+//     if (ok) {
+//       setTimeout(() => {
+//         statusEl.classList.add("opacity-0");
+//         setTimeout(() => statusEl.classList.add("hidden"), 500);
+//       }, 5000);
+//     }
+//   }
+
+//   const EMAIL_RX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // simple client check
+
+//   form.addEventListener("submit", async (e) => {
+//     e.preventDefault();
+//     if (busy || !submitBtn) return; // prevent double-clicks
+
+//     // honeypot: if filled, pretend success
+//     const hp = /** @type {HTMLInputElement|null} */(form.querySelector("#website"));
+//     if (hp && hp.value.trim()) {
+//       showStatus("✅ Thanks! Your message was sent.", true);
+//       form.reset();
+//       return;
+//     }
+
+//     const payload = {
+//       name: form.name?.value.trim(),
+//       email: form.email?.value.trim(),
+//       subject: form.subject?.value.trim(),
+//       message: form.message?.value.trim(),
+//     };
+
+//     if (!payload.name || !payload.email || !payload.subject || !payload.message) {
+//       showStatus("❌ Please fill in all fields.", false);
+//       return;
+//     }
+//     if (!EMAIL_RX.test(payload.email)) {
+//       showStatus("❌ Please enter a valid email address.", false);
+//       return;
+//     }
+
+//     // UI lock
+//     busy = true;
+//     const originalText = submitBtn.textContent;
+//     submitBtn.disabled = true;
+//     submitBtn.textContent = "Sending…";
+
+//     try {
+//       const ctrl = new AbortController();
+//       const t = setTimeout(() => ctrl.abort(), 15000);
+
+//       const res = await fetch(`${API_BASE}/api/contact`, {
+//         method: "POST",
+//         mode: "cors",
+//         headers: {
+//           "Content-Type": "application/json",
+//           "Accept": "application/json",
+//         },
+//         body: JSON.stringify(payload),
+//         signal: ctrl.signal,
+//       });
+
+//       clearTimeout(t);
+
+//       if (res.ok) {
+//         showStatus("✅ Thanks! Your message was sent.", true);
+//         form.reset();
+//         return;
+//       }
+
+//       // try to read JSON error from your Spring handlers
+//       let detail = "";
+//       try {
+//         const data = await res.json();
+//         // Map your server codes to friendly messages
+//         if (data?.code === "invalid_email") {
+//           detail = "Invalid email. Please double-check it.";
+//         } else if (data?.code === "validation_failed") {
+//           detail = "Please correct the highlighted fields.";
+//         } else if (data?.code === "smtp_error" || data?.code === "smtp_unavailable" || data?.code === "smtp_auth_failed") {
+//           detail = "Email service temporarily unavailable. Please try again later.";
+//         } else if (data?.message) {
+//           detail = data.message;
+//         }
+//       } catch {
+//         // fallback to text
+//         const txt = await res.text().catch(() => "");
+//         if (txt) detail = txt.slice(0, 200);
+//       }
+
+//       showStatus(`❌ Sorry—something went wrong.${detail ? " " + detail : ""}`, false);
+//     } catch (err) {
+//       if (err && (err.name === "AbortError")) {
+//         showStatus("❌ Request timed out. Please try again.", false);
+//       } else {
+//         showStatus("❌ Network error. Please try again.", false);
+//       }
+//     } finally {
+//       busy = false;
+//       submitBtn.disabled = false;
+//       submitBtn.textContent = originalText || "Send Message";
+//     }
+//   });
+// });
 
 
 /* ================================
