@@ -1,0 +1,311 @@
+/* /assets/css/deck-carousel.css
+   Deck Carousel — floating polaroids + lightbox (scoped, responsive)
+*/
+
+/* ---- Scoped design tokens ---- */
+.deck-carousel,
+.deck-lightbox {
+  --deck-fg: #e5e7eb;
+
+  /* Photo area (inside the paper) */
+  --card-w: 280px;
+  --card-h: 280px;
+
+  /* Polaroid paper */
+  --paper-pad: 12px;              /* top/left/right */
+  --paper-pad-bottom: 52px;       /* thicker bottom strip */
+  --paper-radius: 10px;           /* outer paper rounding */
+  --photo-radius: 6px;            /* inner photo rounding */
+  --paper-edge: rgba(0,0,0,.14);
+  --paper-grad-top: #fff;
+  --paper-grad-bot: #f8f8f8;
+
+  --shadow: 0 16px 35px rgba(0,0,0,.30);
+  --transition: 420ms cubic-bezier(.22,.61,.36,1);
+}
+
+/* Responsive var tweaks */
+@media (max-width: 900px) {
+  .deck-carousel,
+  .deck-lightbox { --card-w: 240px; --card-h: 150px; }
+}
+@media (max-width: 640px) {
+  .deck-carousel,
+  .deck-lightbox { --card-w: 78vw; --card-h: 46vw; }
+}
+
+/* ---- Container / viewport ---- */
+.deck-carousel { width: 100%; padding: 16px; }
+
+.deck-viewport {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(12px, 2vw, 24px);
+  color: var(--deck-fg);
+  background: transparent;
+  overflow: visible;
+
+  /* layout: deck row + controls row */
+  display: grid;
+  grid-template-rows: auto auto;
+  row-gap: 10px;
+}
+
+/* The fan */
+.deck-track {
+  position: relative;
+  /* include paper padding so bottoms aren't clipped */
+  height: calc(var(--card-h) + var(--paper-pad-bottom) + (var(--paper-pad) * 2) + 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;             /* 3D context for hover tilt */
+}
+
+/* ---- Polaroid Cards ---- */
+.deck-card {
+  position: absolute;
+  width: var(--card-w);
+  height: var(--card-h);                         /* photo area; paper adds via padding */
+  padding: var(--paper-pad) var(--paper-pad) var(--paper-pad-bottom);
+  background: linear-gradient(var(--paper-grad-top), var(--paper-grad-bot));
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--paper-radius);
+  box-shadow: 0 18px 30px rgba(0,0,0,.28), 0 2px 0 rgba(0,0,0,.04) inset;
+  transform-origin: bottom center;
+  transform:
+    translateX(var(--tx, 0px))
+    rotate(var(--rot, 0deg))
+    rotate(var(--hover-spin, 0deg))
+    scale(var(--sc, 1))
+    translateY(var(--hover-lift, 0px))
+    rotateX(var(--hover-tilt-x, 0deg))
+    rotateY(var(--hover-tilt-y, 0deg));
+  transition:
+    transform var(--transition),
+    filter var(--transition),
+    opacity var(--transition),
+    box-shadow var(--transition);
+  will-change: transform;
+  cursor: pointer;
+  overflow: visible;                               /* allow table shadow pseudo */
+  transform-style: preserve-3d;
+}
+
+/* Photo inside the paper */
+.deck-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--photo-radius);
+  box-shadow: 0 1px 0 rgba(0,0,0,.05) inset;
+}
+
+/* Soft “table” shadow under the paper */
+.deck-card::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -12px;
+  height: 22px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,.35), rgba(0,0,0,0) 70%);
+  filter: blur(6px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Subtle inner bottom shading to sell thickness */
+.deck-card::after {
+  content: "";
+  position: absolute;
+  left: var(--paper-pad);
+  right: var(--paper-pad);
+  bottom: calc(var(--paper-pad-bottom) - 8px);
+  height: 10px;
+  background: linear-gradient(to bottom, rgba(0,0,0,.08), rgba(0,0,0,0));
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+/* Hover/focus lift (desktop) */
+@media (hover: hover) {
+  .deck-card:hover {
+    --hover-lift: -6px;
+    --hover-tilt-x: 2deg;
+    --hover-tilt-y: 0.6deg;
+    /* amount to spin; change to taste (e.g., 3deg–6deg) */
+    --hover-spin-amount: 4deg;
+    /* spin direction follows side: left(-1) => -4deg, right(1) => +4deg, center(0) => 0 */
+    --hover-spin: calc(var(--side, 0) * var(--hover-spin-amount));
+    box-shadow: 0 22px 40px rgba(0,0,0,.34), 0 2px 0 rgba(0,0,0,.04) inset;
+    filter: brightness(1.03) saturate(1.02);
+  }
+}
+.deck-card:focus-within {
+  --hover-lift: -6px;
+  --hover-tilt-x: 3deg;
+  --hover-spin-amount: 4deg;
+  --hover-spin: calc(var(--side, 0) * var(--hover-spin-amount));
+  --hover-tilt-y: 0.6deg;
+  box-shadow: 0 22px 40px rgba(0,0,0,.34), 0 2px 0 rgba(0,0,0,.04) inset;
+}
+
+/* Hit area */
+.deck-card__hit {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* ---- Controls row (arrows under the deck) ---- */
+.deck-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.deck-nav {
+  position: static;                 /* now in flow, centered below */
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(17, 24, 39, .28);
+  color: var(--deck-fg);
+  font-size: 22px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+}
+.deck-nav:hover { background: rgba(17, 24, 39, .38); transform: translateY(-1px); }
+.deck-nav:disabled { opacity: .5; pointer-events: none; }
+
+/* Mobile: larger tap targets */
+@media (max-width: 640px) {
+  .deck-nav { width: 56px; height: 56px; font-size: 24px; }
+}
+
+/* ---- Lightbox ---- */
+.deck-lightbox[hidden] { display: none !important; }
+.deck-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  grid-template-columns: 1fr min(1000px, 92vw) 1fr;
+  grid-template-rows: 64px 1fr 64px;
+  align-items: center;
+  justify-items: center;
+  color: var(--deck-fg);
+  background: rgba(10, 15, 25, .92);
+}
+
+.deck-lightbox__figure {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0;
+  text-align: center;
+  display: grid;
+  place-items: center;
+  gap: 14px;
+  max-height: 86vh;
+}
+
+.deck-lightbox__img {
+  display: block;
+  margin-inline: auto;
+  max-width: 92vw;
+  max-height: 70vh;
+  width: auto;
+  height: auto;
+  border-radius: 16px;
+  object-fit: contain;
+  background: #0b1220;
+  box-shadow: 0 16px 35px rgba(0,0,0,.35);
+}
+
+.deck-lightbox__caption {
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: .95;
+}
+
+/* Lightbox controls */
+.deck-lightbox__close,
+.deck-lightbox__prev,
+.deck-lightbox__next {
+  border: 0;
+  border-radius: 999px;
+  color: var(--deck-fg);
+  background: rgba(17, 24, 39, .35);
+  display: grid; place-items: center;
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+}
+
+.deck-lightbox__close {
+  position: absolute;
+  top: 14px; right: 16px;
+  width: 40px; height: 40px;
+  font-size: 26px; line-height: 1;
+}
+
+.deck-lightbox__prev,
+.deck-lightbox__next {
+  width: 54px; height: 54px;
+  font-size: 26px;
+}
+.deck-lightbox__prev { grid-column: 1; grid-row: 2; justify-self: end; margin-right: 10px; }
+.deck-lightbox__next { grid-column: 3; grid-row: 2; justify-self: start; margin-left: 10px; }
+
+/* ---- Accessibility helpers ---- */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+  border: 0; white-space: nowrap;
+}
+
+/* Focus rings */
+.deck-nav:focus-visible,
+.deck-card__hit:focus-visible,
+.deck-lightbox__close:focus-visible,
+.deck-lightbox__prev:focus-visible,
+.deck-lightbox__next:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, .9);
+  outline-offset: 2px;
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .deck-card { transition: transform 0.01ms linear, filter 0.01ms linear; }
+}
+
+/* Ultra-small phones: make cards a bit larger and keep the Polaroid feel */
+@media (max-width: 420px) {
+  .deck-carousel,
+  .deck-lightbox {
+    --card-w: 84vw;
+    --card-h: 52vw;
+    --paper-pad: 10px;
+    --paper-pad-bottom: 52px;
+  }
+}
+
+/* Respect iOS/Android safe area for bottom controls */
+@supports (padding: max(0px)) {
+  @media (max-width: 640px) {
+    .deck-controls { padding-bottom: max(0px, env(safe-area-inset-bottom)); }
+  }
+}

@@ -543,7 +543,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       el.innerHTML = html;
 
-      // re-execute any <script> tags from the included HTML
+      // re-execute any <scrip> tags from the included HTML
       el.querySelectorAll("script").forEach((old) => {
         const s = document.createElement("script");
         Array.from(old.attributes).forEach((a) => s.setAttribute(a.name, a.value));
@@ -653,3 +653,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // If includes are injected after DOMContentLoaded, ensure elements exist before first use
   document.addEventListener('includes:ready', () => {/* no-op; handlers are delegated */}, { once: true });
 })();
+
+
+
+

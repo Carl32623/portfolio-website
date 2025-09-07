@@ -57,6 +57,9 @@
     <!-- Preload Here Background -->
     <link rel="preload" as="image" href="/assets/images/80s_background.jpg" fetchpriority="high">
 
+    <!-- Image Carousel css -->
+    <link rel="stylesheet" href="/assets/css/deck-carousel.css" />
+
 
     <!-- Splide CSS (non-blocking load pattern) -->
     <link
@@ -98,6 +101,10 @@
         gtag('config', 'G-GZMV09HPPR');
     </script>
 </head>
+
+<!-- import js for image carousel -->
+<script type="module" src="/assets/js/deck-carousel.js" defer></script>
+
 
 
     
@@ -179,16 +186,19 @@
             </div>
         </section>
 
-        <!-- ================= IMAGE CAROUSEL ================= --> 
-        <div style="height: 72px"></div>
+        <!-- ================= FOOTER ================= -->
+        <div id="carousel" data-include="/components/imgCarousel.html"></div>
+
+        <!-- ================= IMAGE CAROUSEL ================= -->
+        <!-- <div style="height: 72px"></div>
         <section class="max-w-5xl mx-auto px-6">
             <div class="rounded-2xl bg-gray-900/80 dark:bg-gray-800/80 text-gray-200 p-6 shadow">
                 <div id="image-carousel" class="splide" aria-label="About photos & notes">
                     <div class="splide__track">
-                        <ul class="splide__list">
+                        <ul class="splide__list">  -->
 
                         <!-- Slide 1 -->
-                        <li class="splide__slide">
+                        <!-- <li class="splide__slide">
                             <article class="grid sm:grid-cols-2 gap-5 items-start">
                                 <div class="w-full h-48 sm:h-56 rounded-lg bg-gray-700/20 dark:bg-gray-900/20
                                         flex items-center justify-center overflow-hidden">
@@ -203,10 +213,10 @@
                                     cooking, camping, or making things with my hands.
                                 </p>
                             </article>
-                        </li>
+                        </li>  -->
 
                         <!-- Slide 2 -->
-                        <li class="splide__slide">
+                        <!-- <li class="splide__slide">
                             <article class="grid sm:grid-cols-2 gap-5 items-start">
                                 <img
                                     src="/assets/images/ChairTheifDasha.jpg"
@@ -217,10 +227,10 @@
                                     Meet Dasha, chair thief and occasional code reviewer!
                                 </p>
                             </article>
-                        </li>
+                        </li>  -->
 
                         <!-- Slide 3 -->
-                        <li class="splide__slide">
+                        <!-- <li class="splide__slide">
                             <article class="grid sm:grid-cols-2 gap-5 items-start">
                                 <img
                                     src="/assets/images/ReesesCheesecake.jpg"
@@ -231,10 +241,10 @@
                                     Reese’s cheesecake: all tests passed, zero leftovers.
                                 </p>
                             </article>
-                        </li>
+                        </li>  -->
 
                         <!-- Slide 4 -->
-                        <li class="splide__slide">
+                        <!-- <li class="splide__slide">
                             <article class="grid sm:grid-cols-2 gap-5 items-start">
                                 <img
                                     src="/assets/images/WoodTurning.JPG"
@@ -245,10 +255,10 @@
                                     Weekend lathe therapy: tree + snowman. Splinters: 0, joy: 10/10.
                                 </p>
                             </article>
-                        </li>
+                        </li>  -->
 
                         <!-- Slide 5 -->
-                        <li class="splide__slide">
+                        <!-- <li class="splide__slide">
                             <article class="grid sm:grid-cols-2 gap-5 items-start">
                                 <img
                                     src="/assets/images/WaitWalkAnna.jpg"
@@ -259,10 +269,10 @@
                                     She waits so patiently for her walks.
                                 </p>
                             </article>
-                        </li>
+                        </li>  -->
 
                         <!-- Slide 6 -->
-                        <li class="splide__slide">
+                        <!-- <li class="splide__slide">
                             <article class="grid sm:grid-cols-2 gap-5 items-start">
                                 <img
                                     src="/assets/images/WifeIAdventure.jpg"
@@ -279,7 +289,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
 
         <!-- ================= PROJECTS ================= -->
         <section id="projects" class="bg-gray-100 py-20 px-6">
