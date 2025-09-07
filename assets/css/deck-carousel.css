@@ -109,6 +109,13 @@
   cursor: pointer;
   overflow: visible;                               /* allow table shadow pseudo */
   transform-style: preserve-3d;
+
+  /* depth-of-field defaults */
+  --blur: 0px;
+  --bright: 1;
+  --sat: 1;
+  /* apply the filter via variables so JS can tune per-card */
+  filter: blur(var(--blur)) brightness(var(--bright)) saturate(var(--sat));
 }
 
 /* Photo inside the paper */
@@ -155,20 +162,29 @@
     --hover-lift: -50px;
     --hover-tilt-x: -4deg;
     --hover-tilt-y: 2.6deg;
-    /* amount to spin; change to taste (e.g., 3deg–6deg) */
     --hover-spin-amount: 4deg;
-    /* spin direction follows side: left(-1) => -4deg, right(1) => +4deg, center(0) => 0 */
     --hover-spin: calc(var(--side, 0) * var(--hover-spin-amount));
+    /* keep hovered card crisp and a touch punchier */
+    --blur: 0px;
+    --bright: 1.04;
+    --sat: 1.03;
+
     box-shadow: 0 22px 40px rgba(0,0,0,.34), 0 2px 0 rgba(0,0,0,.04) inset;
-    filter: brightness(1.03) saturate(1.02);
   }
 }
+
 .deck-card:focus-within {
   --hover-lift: -6px;
   --hover-tilt-x: 3deg;
   --hover-spin-amount: 4deg;
   --hover-spin: calc(var(--side, 0) * var(--hover-spin-amount));
   --hover-tilt-y: 0.6deg;
+
+  /* keep focused card crisp/punchy */
+  --blur: 0px;
+  --bright: 1.03;
+  --sat: 1.02;
+  
   box-shadow: 0 22px 40px rgba(0,0,0,.34), 0 2px 0 rgba(0,0,0,.04) inset;
 }
 

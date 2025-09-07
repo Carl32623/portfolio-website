@@ -71,36 +71,47 @@ function initDeckCarousel(root) {
     if (!cardRect) cardRect = cards[0].getBoundingClientRect();
     const containerRect = track.getBoundingClientRect();
 
-    const baseW = cardRect.width || containerRect.width * 0.6;
+    const baseW   = cardRect.width || containerRect.width * 0.6;
     const spacing = Math.min(baseW * 0.58, containerRect.width * 0.45);
     const maxTilt = 14;   // degrees
-    const tiltStep = -8;   // degrees per offset
+    const tiltStep = -8;  // degrees per offset (negative so left/right look natural)
 
     cards.forEach((card, i) => {
-        const offset = i - current;                 // negative = left, positive = right
+        const offset     = i - current;                 // negative = left, positive = right
         const translateX = offset * spacing;
-        const rotate = clamp(-offset * tiltStep, -maxTilt, maxTilt);
-        const scale = 1 - Math.min(Math.abs(offset) * 0.06, 0.40);
+        const rotate     = clamp(-offset * tiltStep, -maxTilt, maxTilt);
+        const scale      = 1 - Math.min(Math.abs(offset) * 0.06, 0.40);
 
-        // already there:
+        // Position/rotation/scale via CSS vars (used in CSS transform)
         card.style.setProperty('--tx',  `${translateX}px`);
         card.style.setProperty('--rot', `${rotate}deg`);
-        card.style.setProperty('--sc',   scale);
+        card.style.setProperty('--sc',  scale);
 
-        // NEW: sign to know which way to rotate on hover
+        // Which side of the center am I on? (for hover spin direction)
         const side = offset === 0 ? 0 : (offset < 0 ? -1 : 1);
         card.style.setProperty('--side', side);
 
-        card.style.zIndex = String(1000 - Math.abs(offset));
-        card.setAttribute("aria-hidden", String(i !== current));
+        // --- Depth of field: further from center = more blur + slight dim/desat ---
+        const depth    = Math.abs(offset);
+        const blurPx   = Math.min(depth * 1.6, 6);                 // tune max blur
+        const bright   = depth === 0 ? 1 : Math.max(0.78, 1 - depth * 0.08);
+        const saturate = depth === 0 ? 1 : Math.max(0.80, 1 - depth * 0.10);
+
+        card.style.setProperty('--blur',   depth ? `${blurPx}px` : '0px');
+        card.style.setProperty('--bright', String(bright));
+        card.style.setProperty('--sat',    String(saturate));
+
+        // Stacking + a11y
+        card.style.zIndex = String(1000 - depth);
+        card.setAttribute('aria-hidden', String(i !== current));
         card.style.opacity = 1;
     });
 
-
     const disabled = cards.length <= 1;
-    prevBtn && (prevBtn.disabled = disabled);
-    nextBtn && (nextBtn.disabled = disabled);
-  }
+    if (prevBtn) prevBtn.disabled = disabled;
+    if (nextBtn) nextBtn.disabled = disabled;
+    }
+
 
   // Deck navigation
   function go(delta) { goTo(current + delta); }
