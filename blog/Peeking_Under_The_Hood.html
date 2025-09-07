@@ -1,0 +1,211 @@
+<!-- 
+  ===========================================================
+  File: blog/Peeking_Under_The_Hood.html
+  Title: Peeking Under the Hood: Week 1 of Reverse Engineering... a.k.a. "Assembly?"
+  Purpose: Individual blog article page with accessible, readable typography
+  Tech Stack: Tailwind CSS via CDN (consider Typography plugin for .prose)
+  Accessibility: Semantic landmarks (<article>), descriptive links, <time>, figure/figcaption
+  Author: Carl LaLonde
+  Last Updated: 09/06/2025
+  ===========================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Peeking Under the Hood: Week 1 of Reverse Engineering... a.k.a. Assembly?" />
+  <meta property="og:description" content="g++ turns my C++ into assembly hieroglyphs, I try to read them like a grown-up. Notes from Week 1 of Software Reverse Engineering." />
+  <meta property="og:url" content="https://carllalonde.com/blog/Peeking_Under_The_Hood.html" />
+  <meta property="og:image" content="https://carllalonde.com/assets/images/Portfolio-blog-post-pics/cs410_reverse_engineering.jpg?v=1" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Cartoon CPU and magnifying glass hovering over x86-64 assembly lines" />
+  <meta property="og:site_name" content="Carl’s Blog" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@Carl32623" />
+  <meta name="twitter:creator" content="@Carl32623" />
+  <meta name="twitter:title" content="Peeking Under the Hood: Week 1 of Reverse Engineering... a.k.a. Assembly?" />
+  <meta name="twitter:description" content="g++ turns my C++ into assembly hieroglyphs, I try to read them like a grown-up. Notes from Week 1 of Software Reverse Engineering." />
+  <meta name="twitter:image" content="https://carllalonde.com/assets/images/Portfolio-blog-post-pics/cs410_reverse_engineering.jpg?v=1" />
+  <meta name="twitter:image:alt" content="Cartoon CPU and magnifying glass hovering over x86-64 assembly lines" />
+
+  <link rel="canonical" href="https://carllalonde.com/blog/Peeking_Under_The_Hood.html" />
+
+  <!-- Preload background for faster first paint -->
+  <link rel="preload" as="image" href="/assets/images/blogBackground.jpg" fetchpriority="high" />
+
+  <!-- CSS & JS -->
+  <link rel="stylesheet" href="/dist/styles.css" />
+  <script src="/script.js" defer></script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZMV09HPPR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GZMV09HPPR');
+  </script>
+
+  <title>CS-410: First Steps into Reverse Engineering</title>
+</head>
+
+<body class="bg-gray-50 text-gray-800"
+  style="
+    background-image:
+    linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)),
+    url('/assets/images/blogBackground.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  ">
+
+  <!-- ================= NAVBAR & BLOG HEADER ================= -->
+  <div id="navbar" data-include="/components/navbar.html"></div>
+  <div id="blog-header" data-include="/components/blog-header.html" data-title="…" data-subtitle="…"></div>
+
+  <!-- ================= ARTICLE ================= -->
+  <article class="max-w-3xl mx-auto px-6 py-10 prose prose-neutral">
+    <header class="pt-8 pb-6">
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-center">
+        Peeking Under the Hood: Week 1 of CS-410 (a.k.a. “... Assembly?”)
+      </h1>
+      <p class="mt-3 text-sm text-gray-500 text-center md:text-left">
+        <time datetime="2025-09-06">Sept 2025</time> • 6–8 min read
+      </p>
+    </header>
+
+    <p>
+      I started Software Reverse Engineering this week. The readings were dense-but-good (school PDFs + Chapters 1–2 of 
+      <em>Reversing: Secrets of Reverse Engineering</em> by Eldad Eilam). Then I asked g++ to turn a baby C++ program into 
+      assembly and immediately regretted all my life choices.
+    </p>
+    <br>
+
+    <h2><strong>The readings (and why my brain feels like it owes me rent)</strong></h2>
+    <p>
+      Older textbook? Yes. Outdated? Not really. Eilam’s early chapters are like opening a classic car manual: 
+      the paint scheme might change, but pistons are still pistons. Same deal with binaries. You learn what’s <em>actually</em> 
+      happening, not just what your IDE wants you to believe is happening.
+    </p>
+    <br>
+
+    <p>
+        <strong>Takeaway:</strong> reverse engineering is less about “breaking stuff” and more about <strong>explaining</strong> 
+        software—structure, intent, side effects—when the source is gone or untrustworthy.
+    </p>
+    <br>
+
+    <h2><strong>Assembly: the ancient alien hieroglyphs</strong></h2>
+    <p>
+      This week we met assembly. Think: the English subtitles for what your CPU actually speaks. Functional. Blunt. Unapologetic. 
+      Looks terrifying at first glance. I’m not in love with it, but I’m convinced this is going to level up how I design 
+      and debug software. When you see how the sausage is made, you write better sausage. (We’re sticking with that metaphor. No refunds.)
+    </p>
+    <br>
+
+    <h2><strong>The Assignment</strong></h2>
+    <p>
+        We were given a small C++ program:
+        <pre>
+            <code>
+                #include &lt;iostream&gt;
+                using namespace std;
+
+                int main() {
+                    int width = 10;
+                    int height = 5;
+                    int area;
+
+                    area = width * height;
+
+                    cout&lt;&lt;endl&lt;&lt; area;
+
+                    return 0;
+                }
+                
+            </code>
+        </pre>
+        then were instructed to run the file through the g++ compiler with a small command line instruction:
+        <pre>
+            <code>
+                g++ -S filename.cpp
+            </code>
+        </pre>
+        The result was a mall .s file.  This is the file that was filled with the alien hieroglyphs! It looked something like this:
+        <pre>
+            <code>
+                subq	$16, %rsp
+                movl	$10, -12(%rbp)
+                movl	$5, -8(%rbp)
+                movl	-12(%rbp), %eax
+                imull	-8(%rbp), %eax
+                movl	%eax, -4(%rbp)
+            </code>
+        </pre>
+        Now the fun begins! We were to match the C++ line to its assembly counterpart, and explain what those mysterious 
+        lines of code are doing. After flipping screens between resource material, C++ code, and assembly code, for the billionth
+        time, I managed to scrape together a pretty decent mapping with real definitions. And as always, my little code reviewer, 
+        <em>Dasha</em>, supervised from the chair she is absolutely convinced is hers, offering subtle barks to keep me on my game!
+    </p>
+    <br>
+
+    <h2><strong>A tiny example of how this stuff reads</strong></h2>
+    <br>
+
+    <p>
+        <div class="not-prose flex justify-center">
+            <pre class="inline-block overflow-x-auto rounded-lg bg-slate-900/90 p-4 text-slate-100">
+                <code>
+                    C++                 Assembly                    English
+                    int main()          main:                       Sets up the stack for the main function. 
+                                            pushq %rbp              Creates space in memory for local variables, reserving 16 bytes.
+                                            movq %rsp, %rbp
+                                            subq $16, %rsp
+                    
+                    int width = 10;         movl $10, -12(%rbp)     Stores the value of 10 into memory, equal to 4 bytes, 
+                                                                    leaving 12 bytes of empty reserve.
+
+                    int height = 5;         movl $5, -6(%rbp)       Stores the value of 5 into memory, equal to 4 bytes, 
+                                                                    leaving 8 bytes of empty reserve.
+                </code>
+            </pre>   
+        </div>                                                     
+                                                    
+        Once you map a few of these, it start to look less… alien. Still alien. But less.
+    </p>
+    <br>
+
+    <p>
+        Next week I'm pretty sure we're moving onto loops and function calls. If you’ve tangoed with assembly in the real 
+        world—malware analysis, performance tuning, weird crash dumps—tell me your war stories. How did you get comfortable? 
+        Any “wish I knew this on day one” tips?
+    </p>
+    <br>
+    <br>
+
+    <footer class="mt-10 text-sm text-slate-500">
+        Written by <span class="font-medium">Carl LaLonde</span>
+    </footer>
+    <br>
+
+    <p class="max-w-3xl mx-auto px-6 mt-12">
+        <a href="/blog/index.html" class="text-blue-600 hover:underline"><strong>← Back to blog</strong></a>
+    </p>
+  </article>
+
+  <!-- ================= COMMENTS ================= -->
+  <div data-include="/components/comments.html"></div>
+
+  <!-- ================= FOOTER ================= -->
+  <div id="footer" data-include="/components/footer.html"></div>
+</body>
+</html>
