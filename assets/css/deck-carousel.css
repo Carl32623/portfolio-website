@@ -14,7 +14,7 @@
   /* Polaroid paper */
   --paper-pad: 12px;              /* top/left/right */
   --paper-pad-bottom: 52px;       /* thicker bottom strip */
-  --paper-radius: 10px;           /* outer paper rounding */
+  --paper-radius: 2px;           /* outer paper rounding */
   --photo-radius: 6px;            /* inner photo rounding */
   --paper-edge: rgba(0,0,0,.14);
   --paper-grad-top: #fff;
@@ -31,8 +31,26 @@
 }
 @media (max-width: 640px) {
   .deck-carousel,
-  .deck-lightbox { --card-w: 78vw; --card-h: 46vw; }
+  .deck-lightbox {
+    /* taller, Polaroid-like aspect */
+    --card-w: min(84vw, 360px);
+    --card-h: calc(var(--card-w) * 1.05);
+
+    /* paper feel on phones */
+    --paper-pad: clamp(10px, 3.5vw, 14px);
+    --paper-pad-bottom: clamp(56px, 11vw, 78px);
+
+    /* less rounded on mobile */
+    --paper-radius: 4px;
+    --photo-radius: 3px;
+  }
+
+  /* a bit more vertical room so shadows don’t clip */
+  .deck-track {
+    height: calc(var(--card-h) + var(--paper-pad-bottom) + (var(--paper-pad) * 2) + 64px);
+  }
 }
+
 
 /* ---- Container / viewport ---- */
 .deck-carousel { width: 100%; padding: 16px; }
@@ -98,6 +116,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: var(--photo-pos, 50% 50%);
   display: block;
   border-radius: var(--photo-radius);
   box-shadow: 0 1px 0 rgba(0,0,0,.05) inset;
@@ -133,9 +152,9 @@
 /* Hover/focus lift (desktop) */
 @media (hover: hover) {
   .deck-card:hover {
-    --hover-lift: -6px;
-    --hover-tilt-x: 2deg;
-    --hover-tilt-y: 0.6deg;
+    --hover-lift: -50px;
+    --hover-tilt-x: -4deg;
+    --hover-tilt-y: 2.6deg;
     /* amount to spin; change to taste (e.g., 3deg–6deg) */
     --hover-spin-amount: 4deg;
     /* spin direction follows side: left(-1) => -4deg, right(1) => +4deg, center(0) => 0 */
@@ -296,12 +315,15 @@
 @media (max-width: 420px) {
   .deck-carousel,
   .deck-lightbox {
-    --card-w: 84vw;
-    --card-h: 52vw;
-    --paper-pad: 10px;
-    --paper-pad-bottom: 52px;
+    --card-w: 88vw;
+    --card-h: calc(var(--card-w) * 1.12);
+    --paper-pad: clamp(10px, 4vw, 16px);
+    --paper-pad-bottom: clamp(64px, 12vw, 88px);
+    --paper-radius: 3px;
+    --photo-radius: 2px;
   }
 }
+
 
 /* Respect iOS/Android safe area for bottom controls */
 @supports (padding: max(0px)) {
