@@ -72,8 +72,8 @@ function initDeckCarousel(root) {
     const containerRect = track.getBoundingClientRect();
 
     const baseW   = cardRect.width || containerRect.width * 0.6;
-    const spacing = Math.min(baseW * 0.58, containerRect.width * 0.45);
-    const maxTilt = 14;   // degrees
+    const spacing = Math.min(baseW * 0.55, containerRect.width * 0.45);
+    const maxTilt = 45;   // degrees
     const tiltStep = -8;  // degrees per offset (negative so left/right look natural)
 
     cards.forEach((card, i) => {

@@ -8,12 +8,12 @@
   --deck-fg: #e5e7eb;
 
   /* Photo area (inside the paper) */
-  --card-w: 280px;
+  --card-w: 260px;
   --card-h: 280px;
 
   /* Polaroid paper */
   --paper-pad: 12px;              /* top/left/right */
-  --paper-pad-bottom: 52px;       /* thicker bottom strip */
+  --paper-pad-bottom: 62px;       /* thicker bottom strip */
   --paper-radius: 2px;           /* outer paper rounding */
   --photo-radius: 6px;            /* inner photo rounding */
   --paper-edge: rgba(0,0,0,.14);
@@ -93,7 +93,7 @@
   box-shadow: 0 18px 30px rgba(0,0,0,.28), 0 2px 0 rgba(0,0,0,.04) inset;
   transform-origin: bottom center;
   transform:
-    translateX(var(--tx, 0px))
+    translateX(var(--tx, 0deg))
     rotate(var(--rot, 0deg))
     rotate(var(--hover-spin, 0deg))
     scale(var(--sc, 1))
