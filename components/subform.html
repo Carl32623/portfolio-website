@@ -1,0 +1,74 @@
+<section id="subscribe" class="nl-wrap">
+  <div class="nl-card">
+    <div class="nl-grid">
+      <!-- Left: copy -->
+      <header class="nl-copy">
+        <h2>Subscribe to the Blog</h2>
+        <p>Get an email when I publish new posts. No spam. Unsubscribe anytime.</p>
+        <p class="rss"><a href="/feed.xml">Prefer RSS?</a></p>
+      </header>
+
+      <!-- Right: MailerLite form -->
+      <div id="mlb2-30606205"
+           class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-30606205">
+        <div class="ml-form-align-center">
+          <div class="ml-form-embedWrapper embedForm">
+            <div class="ml-form-embedBody ml-form-embedBodyHorizontal row-form">
+              <form class="ml-block-form"
+                    action="https://assets.mailerlite.com/jsonp/1783945/forms/164945744021685947/subscribe"
+                    method="post" target="_blank" novalidate>
+
+                <!-- Row: email + button (desktop), stacked on mobile -->
+                <div class="nl-row">
+                  <div class="nl-field">
+                    <div class="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                      <input id="nl-email" type="email" class="form-control"
+                             name="fields[email]" placeholder="you@example.com"
+                             autocomplete="email" required />
+                    </div>
+                  </div>
+                  
+                </div>
+
+                <!-- CAPTCHA sits under the row; MailerLite validates server-side -->
+                <div class="nl-captcha">
+                  <!-- Replace data-sitekey with the key provided in this MailerLite form’s settings -->
+                  <div class="g-recaptcha" data-sitekey="6Lf1KHQUAAAAAFNKEX1hdSWCS3mRMv4FlFaNslaD"></div>
+                </div>
+
+                <div class="nl-button">
+                    <button type="submit" class="primary">Subscribe</button>
+                    <button disabled style="display:none" type="button" class="loading">
+                      <div class="ml-form-embedSubmitLoad"></div>
+                      <span class="sr-only">Loading…</span>
+                    </button>
+                  </div>
+
+                <!-- Hidden ML fields -->
+                <input type="hidden" name="ml-submit" value="1" />
+                <input type="hidden" name="anticsrf" value="true" />
+              </form>
+            </div>
+
+            <div class="ml-form-successBody row-success" style="display:none">
+              <div class="ml-form-successContent">
+                <h4>Thank you!</h4>
+                <p>Check your inbox to confirm your subscription.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- /MailerLite -->
+    </div>
+  </div>
+
+  <!-- Scripts (keep one instance each on the page) -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);}
+      ;l=d.createElement(e);l.async=1;l.src=u;n=d.getElementsByTagName(e)[0]
+      ;n.parentNode.insertBefore(l,n);})(window,document,'script',
+      'https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '1783945');
+  </script>
+</section>

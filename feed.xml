@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Carl’s Blog</title>
+    <link>https://carllalonde.com/</link>
+    <atom:link href="https://carllalonde.com/feed.xml" rel="self" type="application/rss+xml" />
+    <description>Notes on projects, learning, and life as a CS student.</description>
+    <language>en</language>
+    <lastBuildDate>Mon, 08 Sep 2025 12:00:00 GMT</lastBuildDate>
+
+    <item>
+      <title>Peeking Under the Hood: Week 1 of Reverse Engineering... a.k.a. "Assembly?"</title>
+      <link>https://carllalonde.com/blog/Peeking_Under_The_Hood.html</link>
+      <guid isPermaLink="true">https://carllalonde.com/blog/Peeking_Under_The_Hood.html</guid>
+      <pubDate>Mon, 01 Sep 2025 12:00:00 GMT</pubDate>
+      <description><![CDATA[
+        Assembly, coffee, and a g++ compiler. My first lessons in Software Reverse Engineering and, hopefully, understanding assembly language.
+      ]]></description>
+    </item>
+
+    <item>
+      <title>From Formspree to Cloud Run: Building My Portfolio Contact Backend</title>
+      <link>https://carllalonde.com/blog/portfolio-contact-backend.html</link>
+      <guid isPermaLink="true">https://carllalonde.com/blog/portfolio-contact-backend.html</guid>
+      <pubDate>Fri, 29 Aug 2025 12:00:00 GMT</pubDate>
+      <description><![CDATA[
+        How I replaced Formspree with my own Spring Boot backend and deployed it on Google Cloud Run — learning about APIs, secrets, and debugging along the way.
+      ]]></description>
+    </item>
+
+    <item>
+      <title>Shipping My Portfolio: Lessons in Design, Data, and Deployment</title>
+      <link>https://carllalonde.com/blog/portfolio-website-project.html</link>
+      <guid isPermaLink="true">https://carllalonde.com/blog/portfolio-website-project.html</guid>
+      <pubDate>Fri, 15 Aug 2025 12:00:00 GMT</pubDate>
+      <description><![CDATA[
+        From messy folders to real visitors, here’s what building and launching my site taught me.
+      ]]></description>
+    </item>
+
+    <item>
+      <title>Why I'm Finally Building a NAS</title>
+      <link>https://carllalonde.com/blog/dogs-and-a-laptop.html</link>
+      <guid isPermaLink="true">https://carllalonde.com/blog/dogs-and-a-laptop.html</guid>
+      <pubDate>Fri, 08 Aug 2025 12:00:00 GMT</pubDate>
+      <description><![CDATA[
+        Canines 1, Laptop 0. I’m building a home NAS with snapshots, RAID, and an offsite backup—here’s the plan.
+      ]]></description>
+    </item>
+
+    <item>
+      <title>CS-340 Project Two: Rescue-Dog Dashboard</title>
+      <link>https://carllalonde.com/blog/cs340-project-two.html</link>
+      <guid isPermaLink="true">https://carllalonde.com/blog/cs340-project-two.html</guid>
+      <pubDate>Tue, 05 Aug 2025 12:00:00 GMT</pubDate>
+      <description><![CDATA[
+        How I connected MongoDB, Dash, Plotly, and Leaflet to help prioritize rescue-ready dogs—plus what I learned about data-driven UI.
+      ]]></description>
+    </item>
+
+    <item>
+      <title>Meet Carl: A Little Background</title>
+      <link>https://carllalonde.com/blog/first-post.html</link>
+      <guid isPermaLink="true">https://carllalonde.com/blog/first-post.html</guid>
+      <pubDate>Mon, 04 Aug 2025 12:00:00 GMT</pubDate>
+      <description><![CDATA[
+        A quick intro: working full-time at FedEx Express, finishing my CS degree online, and life with my wife and two very opinionated dogs—plus what this blog will cover.
+      ]]></description>
+    </item>
+  </channel>
+</rss>
