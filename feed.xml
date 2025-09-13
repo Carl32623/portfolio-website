@@ -6,7 +6,17 @@
     <atom:link href="https://carllalonde.com/feed.xml" rel="self" type="application/rss+xml" />
     <description>Notes on projects, learning, and life as a CS student.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 08 Sep 2025 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 13 Sep 2025 18:25:00 GMT</lastBuildDate>
+
+    <item>
+      <title>Gobble Hard: A FedEx Story</title>
+      <link>https://carllalonde.com/blog/fedex-turkey.html</link>
+      <guid isPermaLink="true">https://carllalonde.com/blog/fedex-turkey.html</guid>
+      <pubDate>Sat, 13 Sep 2025 18:25:00 GMT</pubDate>
+      <description><![CDATA[
+        A FedEx delivery gone wrong turns into an action movie when wild turkeys decide to pick a fight.
+      ]]></description>
+    </item>
 
     <item>
       <title>Peeking Under the Hood: Week 1 of Reverse Engineering... a.k.a. "Assembly?"</title>
