@@ -16,23 +16,30 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <!-- Page Title & Metadata -->
-        <title>Meet Carl: A Little Background</title>
-        <meta property="og:type" content="article">
-        <meta property="og:title" content="Gobble Hard: A FedEx Story">
-        <meta property="og:description" content="A FedEx delivery gone wrong turns into an action movie when wild turkeys decide to pick a fight.">
-        <meta property="og:url" content="https://carllalonde.com/blog/fedex-turkey.html">
-        <link rel="canonical" href="https://carllalonde.com/blog/fedex-turkey.html">
-
-        <!-- Social Sharing -->
-        <meta property="og:image" content="https://carllalonde.com/assets/og/clMetaImage.png" />
+        <!-- Open Graph -->
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Gobble Hard: A FedEx Story" />
+        <meta property="og:description" content="A FedEx delivery gone wrong turns into an action movie when wild turkeys decide to pick a fight." />
+        <meta property="og:url" content="https://carllalonde.com/blog/fedex-turkey.html" />
+        <meta property="og:image" content="https://carllalonde.com/assets/og/clMetaImage.jpg?v=1" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="Screenshot/hero for 'Gobble Hard: A FedEx Story'" />
+        <meta property="og:image:alt" content="Cartoon turkey sprinting after a FedEx truck." />
         <meta property="og:site_name" content="Carl’s Blog" />
 
-        <!-- Preload blog background for faster paint -->
-        <link rel="preload" as="image" href="/assets/images/blogBackground.jpg" fetchpriority="high">
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@Carl32623" />
+        <meta name="twitter:creator" content="@Carl32623" />
+        <meta name="twitter:title" content="Gobble Hard: A FedEx Story" />
+        <meta name="twitter:description" content="A FedEx delivery gone wrong turns into an action movie when wild turkeys decide to pick a fight." />
+        <meta name="twitter:image" content="https://carllalonde.com/assets/og/clMetaImage.jpg?v=1" />
+        <meta name="twitter:image:alt" content="Cartoon turkey sprinting after a FedEx truck." />
+
+        <link rel="canonical" href="https://carllalonde.com/blog/fedex-turkey.html" />
+
+        <!-- Preload background for faster first paint -->
+        <link rel="preload" as="image" href="/assets/images/blogBackground.jpg" fetchpriority="high" />
 
         <!-- CSS & JS -->
         <link rel="stylesheet" href="/dist/styles.css" />
@@ -50,6 +57,8 @@
             gtag('js', new Date());
             gtag('config', 'G-GZMV09HPPR');
         </script>
+
+        <title>CS-410: First Steps into Reverse Engineering</title>
     </head>
 
     <body class="bg-gray-50 text-gray-800"
