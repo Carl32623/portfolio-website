@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://www.carllalonde.com/</loc></url>
-  <url><loc>https://www.carllalonde.com/blog/</loc></url>
-  <url><loc>https://www.carllalonde.com/blog/first-post.html</loc></url>
-  <url><loc>https://www.carllalonde.com/blog/cs340-project-two.html</loc></url>
+  <url><loc>https://carllalonde.com/</loc></url>
+  <url><loc>https://carllalonde.com/blog/</loc></url>
+  <url><loc>https://carllalonde.com/blog/first-post.html</loc></url>
+  <url><loc>https://carllalonde.com/blog/cs340-project-two.html</loc></url>
+  <url><loc>https://carllalonde.com/blog/dogs-and-a-laptop.html</loc></url>
+  <url><loc>https://carllalonde.com/blog/portfolio-website-project.html</loc></url>
+  <url><loc>https://carllalonde.com/blog/portfolio-website-project.html</loc></url>
+  <url><loc>https://carllalonde.com/blog/portfolio-contact-backend.html</loc></url>
+  <url><loc>https://carllalonde.com/blog/Peeking_Under_The_Hood.html</loc></url>
+  <url><loc>https://carllalonde.com/blog/fedex-turkey.html</loc></url>
+  <url><loc>https://carllalonde.com/blog/slowly_but_surely_cs410.html</loc></url>
 </urlset>

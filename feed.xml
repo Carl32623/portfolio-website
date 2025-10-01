@@ -9,6 +9,16 @@
     <lastBuildDate>Sat, 13 Sep 2025 18:25:00 GMT</lastBuildDate>
 
     <item>
+      <title>Reverse Engineering, Assembly, and Security Testing</title>
+      <link>https://carllalonde.com/blog/slowly_but_surely_cs410.html</link>
+      <guid isPermaLink="true">https://carllalonde.com/blog/slowly_but_surely_cs410.html</guid>
+      <pubDate>Tue, 30 Sep 2025 21:00:00 GMT<pubDate>
+      <description><![CDATA[
+        What CS-410 taught me about reading assembly, mapping it back to C++, and using tools like OWASP ZAP and static analysis to spot security issues.
+      ]]></description>
+    </item>
+
+    <item>
       <title>Gobble Hard: A FedEx Story</title>
       <link>https://carllalonde.com/blog/fedex-turkey.html</link>
       <guid isPermaLink="true">https://carllalonde.com/blog/fedex-turkey.html</guid>

@@ -1,0 +1,232 @@
+<!-- 
+  ===========================================================
+  File: blog/slowly-but-surely-cs410.html
+  Title: Reverse Engineering, Assembly, and Security Testing
+  Purpose: Individual blog article page with accessible typography
+  Tech Stack: Tailwind CSS via CDN (consider Typography plugin for prose classes)
+  Accessibility: Semantic landmarks (<article>), descriptive links, <time> element
+  Author: Carl LaLonde
+  Last Updated: 2025-09-30
+  ===========================================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Reverse Engineering, Assembly, and Security Testing</title>
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Reverse Engineering, Assembly, and Security Testing" />
+        <meta property="og:description" content="What CS-410 taught me about reading assembly, mapping it back to C++, and using tools like OWASP ZAP and static analysis to spot security issues." />
+        <meta property="og:url" content="https://carllalonde.com/blog/slowly_but_surely_cs410.html" />
+        <meta property="og:image" content="https://carllalonde.com/assets/images/Portfolio-blog-post-pics/slowlybutsurely.jpg?v=1" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Cartoon student studying assembly code with a magnifying glass over a padlock." />
+        <meta property="og:site_name" content="Carl’s Blog" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@Carl32623" />
+        <meta name="twitter:creator" content="@Carl32623" />
+        <meta name="twitter:title" content="Reverse Engineering, Assembly, and Security Testing" />
+        <meta name="twitter:description" content="What CS-410 taught me about reading assembly, mapping it back to C++, and using tools like OWASP ZAP and static analysis to spot security issues." />
+        <meta name="twitter:image" content="https://carllalonde.com/assets/images/Portfolio-blog-post-pics/slowlybutsurely.jpg?v=1" />
+        <meta name="twitter:image:alt" content="Cartoon student studying assembly code with a magnifying glass over a padlock." />
+
+        <link rel="canonical" href="https://carllalonde.com/blog/slowly_but_surely_cs410.html" />
+
+        <!-- Preload background for faster first paint -->
+        <link rel="preload" as="image" href="/assets/images/blogBackground.jpg" fetchpriority="high" />
+
+        <!-- CSS & JS -->
+        <link rel="stylesheet" href="/dist/styles.css" />
+        <script src="/script.js" defer></script>
+
+        <!-- RSS -->
+        <link rel="alternate" type="application/rss+xml"
+            title="Carl’s Blog RSS" href="/feed.xml">
+
+        <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZMV09HPPR"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-GZMV09HPPR');
+        </script>
+    </head>
+
+    <body class="bg-gray-50 text-gray-800"
+        style="
+            background-image:
+            linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)),
+            url('/assets/images/blogBackground.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        ">
+
+        <!-- ================= NAVBAR & HEADER ================= -->
+        <div id="navbar" data-include="/components/navbar.html"></div>
+        <div id="blog-header" data-include="/components/blog-header.html" data-title="…" data-subtitle="…"></div>
+
+        <!-- ================= ARTICLE ================= -->
+        <article class="max-w-3xl mx-auto px-6 py-10 prose prose-neutral">
+            <header class="pt-8 pb-6">
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-center">Reverse Engineering, Assembly, and Security Testing</h1>
+                <p class="mt-3 text-sm text-gray-500 text-center md:text-left">
+                    <p class="text-4xl font-extrabold text-center text-indigo-700 mb-2">
+                        Going from Assembly to C++ to Security
+                    </p>
+                    <time datetime="2025-09-30">Sept 2025</time> • 5 min read
+                </p>
+            </header>
+            <br>
+
+            <p>
+                This term, I’ve been diving into <strong>CS-410: Software Reverse Engineering</strong>—and let me tell you, 
+                it has been one of the tougher classes I’ve taken so far. The core of the course has us working with code at 
+                the lowest level, starting with <strong>binary</strong>, converting it to <strong>assembly</strong>, and then 
+                rebuilding that into something more recognizable like <strong>C++</strong>.
+            </p>
+            <br>
+            <p>
+                On paper, that doesn’t sound too bad. We’re only talking about small programs—maybe 2, 3, or 4 methods. 
+                But the challenge isn’t the size of the programs, it’s the complexity of understanding what’s happening in 
+                <strong>assembly language</strong>. That’s where I often get stuck.
+            </p>
+            <br>
+            <p>
+                Take this snippet, for example:
+            </p>
+            <pre>
+                <code>
+                    push   %rbp
+                    mov    %rsp, %rbp
+                    sub    $0x10, %rsp
+                    mov    %edi, -0x4(%rbp)
+                    mov    -0x4(%rbp), %eax
+                    add    $0x5, %eax
+                    mov    %eax, -0x8(%rbp)
+                    mov    -0x8(%rbp), %eax
+                    leaveq
+                    retq
+                </code>
+            </pre>
+            <p>
+                <strong>Equivalent C++ Code</strong>
+            </p>
+            <pre>
+                <code>
+                    int addFive(int x) {
+                        int result = x + 5;
+                        return result;
+                    }
+                </code>
+            </pre>
+            <br>
+            <p>
+                When you see them side by side, it kind of makes sense. The assembly is just the step-by-step 
+                breakdown of what the compiler does for a simple C++ function:
+            </p>
+            <br>
+            <ul class="list-disc pl-6 space-y-1">
+                <li><strong>-</strong>The first few lines set up the stack frame (push, mov, sub).</li>
+                <li><strong>-</strong>The value of the function parameter x gets stored on the stack.</li>
+                <li><strong>-</strong>Then x is moved into a register, 5 is added, and the result is stored.</li>
+                <li><strong>-</strong>Finally, that result is placed back into the return register and the function cleans up (leaveq / retq).</li>
+            </ul> 
+            <br>
+            <p>
+                It’s not <em>fun</em> work, but mapping assembly back to C++ gives me a better appreciation for what’s 
+                happening behind the curtain every time I write a line of code.
+            </p>
+            <br>
+            <h3 class="mt-8 text-2xl font-bold">From Reverse Engineering to Security</h3>
+            
+            <p>
+                This week, our focus shifted toward how <strong>reverse engineering ties</strong> into software security. 
+                It’s not just an academic exercise—it’s a real-world tool. Reverse engineering is how security researchers:
+            </p>
+            <br>
+            <ul class="list-disc pl-6 space-y-1">
+                <li><strong>-Find vulnerabilities</strong> hidden deep inside compiled code,</li>
+                <li><strong>-Analyze malware</strong> to see how it operates,</li>
+                <li><strong>-Understand legacy software</strong> when documentation doesn’t exist.</li>
+            </ul>
+            <br>
+            <p>
+                For example, by looking at assembly, you can sometimes spot things like <strong>buffer overflows</strong>—areas 
+                where a program fails to check input properly, leaving the door wide open for exploits. Or you can see where memory 
+                isn’t being managed securely, which could lead to leaks or unauthorized access.
+            </p>
+            <br>
+            <p>
+                I also decided to test the security of my own <strong>portfolio website</strong> using <strong>OWASP ZAP</strong> 
+                (Zed Attack Proxy). It’s a tool often used by penetration testers to scan for vulnerabilities. Running ZAP against 
+                my site was an eye-opening experience, even though my site is deployed through GitHub Pages and doesn’t have a 
+                backend server to exploit. Because of that, there weren’t many real vulnerabilities to worry about—the static hosting 
+                environment limits attack surfaces. Still, ZAP flagged a few things like missing security headers and cookie settings 
+                that I normally wouldn’t have thought about. Even though I couldn’t “patch” much due to the limitations of 
+                <strong>GitHub Pages</strong>, it gave me a good sense of what attackers look for and how security testing works 
+                in practice. 
+            </p>
+            <br>
+            <p>
+                Beyond ZAP, I’ve also had some exposure to static analysis tools while working on Java projects. Tools like SonarLint 
+                integrate into an IDE and scan through code to highlight common security issues (like unchecked input, potential null 
+                pointer risks, or SQL injection patterns). While they don’t attack your site like ZAP, they provide a proactive way to 
+                catch vulnerabilities before code is deployed. Pairing that with unit testing adds an extra safety net—ensuring both 
+                functionality and security get checked.
+            </p>
+            <br>
+            <p>
+                So while I may not “enjoy” translating assembly to C++ line by line, I’m beginning to see the value. Reverse 
+                engineering forces you to look under the hood, and once you do, you start to appreciate how fragile software 
+                can be—and why secure coding practices are so important.
+            </p>
+            <br>
+            <h3 class="mt-8 text-2xl font-bold">Final Thoughts</h3>
+            <p>
+                CS-410 has been a grind for me. I won’t sugarcoat it—there are moments where I feel completely lost staring at 
+                lines of assembly code. But slowly, bit by bit, I’m getting through it. And in the process, I’m learning not just 
+                about how programs are built, but how they can be broken.
+            </p>
+            <br>
+            <p>
+                If nothing else, this course has reminded me that <strong>software security isn’t just about writing new code carefully</strong>. 
+                It’s also about being able to take software apart, analyze it, and understand the risks hiding beneath the surface. 
+                And now, thanks to both classwork and hands-on testing with tools like ZAP and static analysis, I have a deeper 
+                appreciation for why security needs to be built in from the ground up.
+            </p>
+            <br>
+            <p>
+                I’m curious—what tools do you like to use to sniff out security vulnerabilities in your own projects?
+            </p>
+            <br>
+            <br>
+
+
+            <footer class="mt-10 text-sm text-slate-500">
+                Written by <span class="font-medium">Carl LaLonde</span>
+            </footer>
+            <br>
+
+            <p class="max-w-3xl mx-auto px-6 mt-12">
+                <a href="/blog/index.html" class="text-blue-600 hover:underline"><strong>← Back to blog</strong></a>
+            </p>
+        </article>
+
+        <!-- ================= COMMENTS ================= -->
+        <div data-include="/components/comments.html"></div>
+
+        <!-- ================= FOOTER ================= -->
+        <div id="footer" data-include="/components/footer.html"></div>
+    </body>
+</html>
