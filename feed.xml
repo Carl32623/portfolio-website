@@ -9,10 +9,18 @@
     <lastBuildDate>Sat, 13 Sep 2025 18:25:00 GMT</lastBuildDate>
 
     <item>
+      <title>Cybersecurity Awareness Month: Simple Tips to Stay Safe</title>
+      <link>https://carllalonde.com/blog/CyberSecurityAwarenessMonth.html</link>
+      <guid isPermaLink="true">https://carllalonde.com/blog/CyberSecurityAwarenessMonth.html</guid>
+      <pubDate>Thur, 09 Oct 2025 22:45:00</pubDate>
+      <description><![CDATA[
+        Cybersecurity Month tips: spot scams, strengthen passwords, use VPNs, and back up your data—explained with humor and clarity.
+      ]]></description>
+    <item>
       <title>Reverse Engineering, Assembly, and Security Testing</title>
       <link>https://carllalonde.com/blog/slowly_but_surely_cs410.html</link>
       <guid isPermaLink="true">https://carllalonde.com/blog/slowly_but_surely_cs410.html</guid>
-      <pubDate>Tue, 30 Sep 2025 21:00:00 GMT<pubDate>
+      <pubDate>Tue, 30 Sep 2025 21:00:00 GMT</pubDate>
       <description><![CDATA[
         What CS-410 taught me about reading assembly, mapping it back to C++, and using tools like OWASP ZAP and static analysis to spot security issues.
       ]]></description>
