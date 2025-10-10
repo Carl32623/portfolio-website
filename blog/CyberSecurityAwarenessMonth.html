@@ -1,0 +1,264 @@
+<!-- 
+  ===========================================================
+  File: blog/CyberSecurityAwarenessMonth.html
+  Title: Cybersecurity Awareness Month: Protecting Your Digital Pants from Falling Down
+  Purpose: Long-form blog article with practical security tips (phishing, passwords, MFA, VPNs, backups) delivered in a humorous, approachable tone
+  Tech Stack: Tailwind CSS via CDN (Typography plugin recommended), responsive hero image (1200x600), Open Graph/Twitter meta
+  Accessibility: Semantic landmarks (<article>, <header>, <section>), descriptive links, <figure> with meaningful alt text, <time> element, proper heading hierarchy
+  Author: Carl LaLonde
+  Last Updated: 2025-10-09
+  ===========================================================
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Cybersecurity Awareness Month</title>
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="Cybersecurity Awareness Month: Simple Tips to Stay Safe" />
+        <meta property="og:description" content="Cybersecurity Month tips: spot scams, strengthen passwords, use VPNs, and back up your data—explained with humor and clarity." />
+        <meta property="og:url" content="https://carllalonde.com/blog/CyberSecurityAwarenessMonth.html" />
+        <meta property="og:image" content="https://carllalonde.com/assets/images/Portfolio-blog-post-pics/CyberSecurityAwarenessMonth.jpg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Cartoon cybersecurity awareness illustration with laptop and hackers." />
+        <meta property="og:site_name" content="Carl’s Blog" />
+
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@Carl32623" />
+        <meta name="twitter:creator" content="@Carl32623" />
+        <meta name="twitter:title" content="Cybersecurity Awareness Month: Simple Tips to Stay Safe" />
+        <meta name="twitter:description" content="Cybersecurity Month tips: spot scams, strengthen passwords, use VPNs, and back up your data—explained with humor and clarity." />
+        <meta name="twitter:image" content="https://carllalonde.com/assets/images/Portfolio-blog-post-pics/CyberSecurityAwarenessMonth.jpg" />
+        <meta name="twitter:image:alt" content="Cartoon cybersecurity awareness illustration with laptop and hackers." />
+
+        <link rel="canonical" href="https://carllalonde.com/blog/CyberSecurityAwarenessMonth.html" />
+
+        <!-- Preload background for faster first paint -->
+        <link rel="preload" as="image" href="/assets/images/blogBackground.jpg" fetchpriority="high" />
+
+        <!-- CSS & JS -->
+        <link rel="stylesheet" href="/dist/styles.css" />
+        <script src="/script.js" defer></script>
+
+        <!-- RSS -->
+        <link rel="alternate" type="application/rss+xml"
+            title="Carl’s Blog RSS" href="/feed.xml">
+
+        <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZMV09HPPR"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-GZMV09HPPR');
+        </script>
+    </head>
+
+    <body class="bg-gray-50 text-gray-800"
+        style="
+            background-image:
+            linear-gradient(rgba(255,255,255,.85), rgba(255,255,255,.85)),
+            url('/assets/images/blogBackground.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        ">
+
+        <!-- ================= NAVBAR & HEADER ================= -->
+        <div id="navbar" data-include="/components/navbar.html"></div>
+        <div id="blog-header" data-include="/components/blog-header.html" data-title="…" data-subtitle="…"></div>
+
+        <!-- ================= ARTICLE ================= -->
+        <article class="max-w-3xl mx-auto px-6 py-10 prose prose-neutral">
+            <header class="pt-8 pb-6">
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-center">Cybersecurity Awareness Month</h1>
+                <p class="mt-3 text-sm text-gray-500 text-center md:text-left">
+                    <p class="text-4xl font-extrabold text-center text-indigo-700 mb-2">
+                        Protecting Your Digital Pants from Falling Down
+                    </p>
+                    <time datetime="2025-10-09">October 2025</time> • 6-8 min read
+                </p>
+            </header>
+            <br>
+            
+            <p>
+                October isn’t just about pumpkin spice lattes, spooky costumes, and pretending you love your neighbor’s 
+                pumpkin pie. It’s also Cybersecurity Awareness Month—the one time of year when everyone collectively remembers 
+                that the internet is not, in fact, a safe magical land of cat videos and two-day shipping. It’s basically the 
+                digital equivalent of reminding people to wear pants in public. You think it’s obvious… but history (and data 
+                breaches) beg to differ.
+            </p>
+            <br>
+            <p>
+                So grab your latte, keep your pants on, and let’s talk about why this month matters—and what you can actually do 
+                about it.
+            </p>
+            <br>
+            <h3 class="mt-8 text-2xl font-bold">The Monsters Aren’t Under Your Bed, They’re in Your Inbox</h3>
+            
+            <p>
+                Forget zombies. The real horror show is that email from “Amazon Support” claiming your account is on hold 
+                because you bought a <strong>$4,000 llama grooming kit</strong>. All you have to do is click a link, confirm 
+                your password, and boom, your bank account is emptier than my promises to “just watch one more episode.”
+            </p>
+            <br>
+            <p>
+                And it’s not just emails anymore. Phishing scams have moved into your texts too.  That “urgent” message from 
+                the DMV about unpaid tolls or traffic tickets? Yeah, spoiler alert: the real DMV won’t text you a sketchy link 
+                about unpaid fees and fines.
+            </p>
+            <br>
+            <p>
+                Other favorites making the rounds: fake UPS delivery texts (“your package is delayed, click here to reschedule”), 
+                IRS refund scams (because nothing screams “legit” like the IRS giving money back without a fight), and bank fraud 
+                alerts from banks you don’t even use.
+            </p>
+            <br>
+            <p>
+                Phishing scams are smarter than ever. They’ve graduated from the “Hello, I am a prince with $10 million” school 
+                of bad English to professionally designed, logo-perfect, one-click-ruins-your-life masterpieces.
+            </p>
+            <br>
+            <p>
+                Rule of thumb: if it smells fishy, looks phishy, or makes you say, “Wait… did I order a llama groomer?”, don’t click.
+            </p>
+            <br>
+            <h3 class="mt-8 text-2xl font-bold">Your Passwords Aren’t Cutting It</h3>
+
+            <p>
+                If your password is still “Password123,” I’ve got bad news: that’s basically the digital equivalent of leaving your 
+                house keys under the “Welcome” mat. Hackers love people like that; it makes their jobs way too easy.
+            </p>
+            <br>
+            <p>
+                Here’s how to step it up:
+            </p>
+            <br>
+            
+            <ul>
+                <li><strong>• Use</strong> long, unique passphrases. Instead of short, obvious words, string together something 
+                    memorable but complex, like “<em>IloveTacosOnTuesdaysBecauseLifeIsShort2025</em>.” Longer is stronger.
+                </li><br>
+                <li><strong>•  Use</strong> a password manager. Tools like 1Password, LastPass, Dashlane, or Bitwarden can 
+                    generate and store unique, complex passwords for all your accounts. You only need to remember one master 
+                    password (and no, it shouldn’t be “tacos123”).
+                </li><br>
+                <li><strong>•  Turn</strong> on multi-factor authentication (MFA). This adds an extra layer of security. </li>  
+            </ul>
+            <br>
+            <p>
+                Sure, MFA might feel mildly annoying, but not as annoying as explaining to your bank how your “Password123” 
+                lifestyle turned into a hacker’s dream vacation.
+            </p>
+            <br>
+            <h3 class="mt-8 text-2xl font-bold">Public Wi-Fi: Free Internet, Expensive Consequences</h3>
+            <p>
+                That free café Wi-Fi is less “free” and more “freely available to hackers.” It’s basically like shouting your 
+                social security number across Starbucks.
+            </p>
+            <br>
+            <p>
+                Example: let’s say you connect to “FreeCoffeeShop_WiFi.” A hacker sitting two tables over can set up a fake 
+                hotspot called “CoffeeShop_FreeWiFi” and boom, you’ve just handed them your internet traffic. They can see 
+                what sites you’re visiting, snag login credentials, or even intercept that “secure” banking session you thought 
+                was safe.
+            </p>
+            <br>
+            <p>
+                Want to scroll memes in peace? Get a VPN (Virtual Private Network). VPNs encrypt your data, hide your IP 
+                address, and stop hackers from snooping on you like nosy neighbors peeking through the blinds. Solid options 
+                include:
+            </p>
+            <br>
+            <ul>
+                <li>•	<strong>NordVPN</strong></li>
+                <li>•	<strong>ExpressVPN</strong></li>
+                <li>•	<strong>Proton VPN</strong></li>
+                <li>•	<strong>Surfshark</strong></li>
+            </ul>
+            <br>
+            <p>
+                They’re easy to install, usually cost less than a fancy latte per month, and give you peace of mind knowing 
+                your digital life isn’t an open book for strangers at the coffee shop.
+            </p>
+            <br>
+            <h3 class="mt-8 text-2xl font-bold">Backups: Insurance for Your Data</h3>
+            <p>
+                Imagine losing all your photos, documents, and that unfinished novel you’ve been pretending to write 
+                since 2017. Now imagine paying some hacker in Bitcoin to get them back. Yikes.
+            </p>
+            <br>
+            <p>
+                That’s why backups are basically insurance for your data. You don’t want to think about them until disaster 
+                strikes, and then suddenly, they’re the best investment you ever made.
+            </p>
+            <br>
+            <p>
+                Here’s how to do it right:
+            </p>
+            <br>
+            <ul>
+                <li><strong>•	Cloud backups:</strong> Use services like Google Drive, iCloud, OneDrive, or Dropbox to automatically sync your important files.</li>
+                <li><strong>•	Dedicated backup services:</strong> Options like Backblaze or Carbonite continuously back up your entire system in the background.</li>
+                <li><strong>•	Physical backups:</strong> External hard drives are still your friend—just remember to plug them in more often than you check your fantasy football lineup.</li>
+            </ul>
+            <br>
+            <p>
+                The rule of thumb? The 3-2-1 rule: keep 3 copies of your data, on 2 different types of storage, 
+                with 1 copy offsite (like the cloud). Future You will high-five Present You for not being a 
+                procrastinating disaster.
+            </p>
+            <br>
+            <h3 class="mt-8 text-2xl font-bold">The Bottom Line: Be Cyber-Savvy, Not Cyber-Sorry</h3>
+            <p>
+                Cybersecurity Awareness Month isn’t about scaring you into thinking hackers are hiding under your bed. 
+                It’s about reminding you that the digital world can be messy, unpredictable, and occasionally full of 
+                people who’d love to steal your stuff. Think of it like riding the subway: keep your wallet close, don’t 
+                talk to sketchy strangers, and definitely don’t trust the guy offering “free Wi-Fi” from his off-brand hotspot.
+            </p>
+            <br>
+            <p>
+                The good news? Protecting yourself doesn’t take a PhD in computer science or a closet full of tinfoil hats. 
+                Small steps, like stronger passwords, turning on MFA, using a VPN, and backing up your files, add up fast.
+            </p>
+            <br>
+            <p>
+                Do those things and you’ll spend less time stressing over stolen identities and more time enjoying the 
+                internet the way it was meant to be enjoyed: doom scrolling memes, losing track of hours on YouTube rabbit 
+                holes, and yes, binge-watching shows guilt-free.
+            </p>
+            <br>
+            <p>
+                So, stay safe, stay smart, and remember the golden rule of cybersecurity: pants on, passwords strong.
+            </p>
+            <br>
+            <br>
+
+
+
+            <footer class="mt-10 text-sm text-slate-500">
+                Written by <span class="font-medium">Carl LaLonde</span>
+            </footer>
+            <br>
+
+            <p class="max-w-3xl mx-auto px-6 mt-12">
+                <a href="/blog/index.html" class="text-blue-600 hover:underline"><strong>← Back to blog</strong></a>
+            </p>
+        </article>
+
+        <!-- ================= COMMENTS ================= -->
+        <div data-include="/components/comments.html"></div>
+
+        <!-- ================= FOOTER ================= -->
+        <div id="footer" data-include="/components/footer.html"></div>
+    </body>
+</html>
