@@ -9,6 +9,16 @@
     <lastBuildDate>Sat, 13 Sep 2025 18:25:00 GMT</lastBuildDate>
 
     <item>
+      <title>Bring Back The Retro Bell</title>
+      <link>https://carllalonde.com/blog/Taco_Bell_Retro_Menu.html</link>
+      <guid> isPermaLink="true">https://carllalonde.com/blog/Taco_Bell_Retro_Menu.html</guid>
+      <pubDate>Fri, 17 Oct 2025 16:24:00</pubDate>
+      <description><![CDATA[
+        A plea to Taco Bell to bring back the retro menu.
+      ]]></description>
+    </item>
+
+    <item>
       <title>Cybersecurity Awareness Month: Simple Tips to Stay Safe</title>
       <link>https://carllalonde.com/blog/CyberSecurityAwarenessMonth.html</link>
       <guid isPermaLink="true">https://carllalonde.com/blog/CyberSecurityAwarenessMonth.html</guid>
@@ -16,6 +26,8 @@
       <description><![CDATA[
         Cybersecurity Month tips: spot scams, strengthen passwords, use VPNs, and back up your data—explained with humor and clarity.
       ]]></description>
+    </item>
+    
     <item>
       <title>Reverse Engineering, Assembly, and Security Testing</title>
       <link>https://carllalonde.com/blog/slowly_but_surely_cs410.html</link>
